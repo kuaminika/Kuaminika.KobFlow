@@ -23,6 +23,11 @@ namespace Kuaminika.KobFlow.Merchant.Test
             logTool.LogWithTime = true;
             logTool.logObject(new Tuple<string, string>("str1 with time on", "this is an object"), $"{GetType().Name}.TestLogTool");
 
+            logTool.LogIsOff = true;
+            logTool.Log("logging with tool with location  and time turned off", $"{GetType().Name}.TestLogTool");
+            logTool.LogError("logging with log being off");
+            logTool.LogIsOff = false;
+            logTool.Log("log being back on", $"{GetType().Name}.TestLogTool");
             Assert.Pass();
         }
     }

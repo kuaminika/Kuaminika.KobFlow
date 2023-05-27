@@ -2,6 +2,7 @@
 {
     public interface IKLogTool
     {
+        bool LogIsOff { get; set; }
         bool LogWithTime { get; set; }
 
         void LogError(string message, string location = "");

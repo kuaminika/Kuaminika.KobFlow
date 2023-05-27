@@ -8,6 +8,7 @@
             _parser = objParser;
         }
         public bool LogWithTime { get; set; }
+        public bool LogIsOff { get; set; }
 
         private string time { get { return LogWithTime ? DateTime.Now.ToString() + "-->" : string.Empty; } }
         private string formatLocation(string location)
@@ -19,6 +20,7 @@
 
         public void Log(string msg, string location = "")
         {
+            if (LogIsOff) return;
             _doLog(formatLocation(location) + msg);
         }
 
@@ -29,6 +31,7 @@
 
         public void logObject<T>(T list, string location = "")
         {
+            if (LogIsOff) return;
             _doLog(formatLocation(location) + _parser.Serialize(list));
         }
     }
