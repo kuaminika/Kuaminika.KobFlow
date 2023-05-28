@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.Merchant", "Kuaminika.KobFlow.Merchant\Kuaminika.KobFlow.Merchant.csproj", "{76679C02-9401-451B-8601-1DEDEC9CDB45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.Merchant.Test", "Kuaminika.KobFlow.Merchant.Test\Kuaminika.KobFlow.Merchant.Test.csproj", "{F054517F-B72F-45B0-ABB4-C57ACDD98701}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.Merchant.Test", "Kuaminika.KobFlow.Merchant.Test\Kuaminika.KobFlow.Merchant.Test.csproj", "{F054517F-B72F-45B0-ABB4-C57ACDD98701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaniminka.KobFlow.ToolBox", "Kuaniminka.KobFlow.ToolBox\Kuaniminka.KobFlow.ToolBox.csproj", "{7DDED288-0850-4F95-A829-C1BA70A1F01D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaniminka.KobFlow.ToolBox", "Kuaniminka.KobFlow.ToolBox\Kuaniminka.KobFlow.ToolBox.csproj", "{7DDED288-0850-4F95-A829-C1BA70A1F01D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.Merchant", "Kuaminika.KobFlow.API.Merchant\Kuaminika.KobFlow.API.Merchant.csproj", "{D51E919A-9A48-4D2F-8BC6-881A5AEF2DFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.MerchantService", "Kuaminika.KobFlow.MerchantService\Kuaminika.KobFlow.MerchantService.csproj", "{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{76679C02-9401-451B-8601-1DEDEC9CDB45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76679C02-9401-451B-8601-1DEDEC9CDB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76679C02-9401-451B-8601-1DEDEC9CDB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76679C02-9401-451B-8601-1DEDEC9CDB45}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F054517F-B72F-45B0-ABB4-C57ACDD98701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F054517F-B72F-45B0-ABB4-C57ACDD98701}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F054517F-B72F-45B0-ABB4-C57ACDD98701}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +25,14 @@ Global
 		{7DDED288-0850-4F95-A829-C1BA70A1F01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DDED288-0850-4F95-A829-C1BA70A1F01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DDED288-0850-4F95-A829-C1BA70A1F01D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D51E919A-9A48-4D2F-8BC6-881A5AEF2DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D51E919A-9A48-4D2F-8BC6-881A5AEF2DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D51E919A-9A48-4D2F-8BC6-881A5AEF2DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D51E919A-9A48-4D2F-8BC6-881A5AEF2DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

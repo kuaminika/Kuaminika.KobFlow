@@ -9,5 +9,15 @@
         {
             Console.WriteLine(message);
         }
+
+        protected override void _doLogError(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        protected override void _doTrace(string message)
+        {
+            Console.WriteLine(message);
+        }
     }
 }

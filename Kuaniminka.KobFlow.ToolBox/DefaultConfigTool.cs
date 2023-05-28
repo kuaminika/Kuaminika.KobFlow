@@ -14,6 +14,8 @@ namespace Kuaniminka.KobFlow.ToolBox
             this.config = config; 
         }
 
+      
+
         public bool GetBoolBalue(string key)
         {
             try 
@@ -83,6 +85,8 @@ namespace Kuaniminka.KobFlow.ToolBox
                 throw new Exception(string.Format(ERROR_FETICHING, key), ex);
             }
         }
+
+      
     }
 
 }

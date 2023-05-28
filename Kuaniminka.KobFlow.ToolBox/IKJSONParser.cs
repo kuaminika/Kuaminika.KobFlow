@@ -5,4 +5,6 @@
         string Serialize<T>(T obj);
         T Parse<T>(string str);
     }
+
+
 }
