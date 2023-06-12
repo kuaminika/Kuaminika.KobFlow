@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /Kuaminika.KobFlow.Merchant.Test/testconfig.json
 /Untitled1.ps1
+/Kuaminika.KobFlow.API.IncomeCategory/appsettings.json
+/Kuaminika.KobFlow.API.IncomeCategory/appsettings.Development.json
