@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaniminka.KobFlow.ToolBox"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.Merchant", "Kuaminika.KobFlow.API.Merchant\Kuaminika.KobFlow.API.Merchant.csproj", "{D51E919A-9A48-4D2F-8BC6-881A5AEF2DFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.MerchantService", "Kuaminika.KobFlow.MerchantService\Kuaminika.KobFlow.MerchantService.csproj", "{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.MerchantService", "Kuaminika.KobFlow.MerchantService\Kuaminika.KobFlow.MerchantService.csproj", "{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.IncomeCategory", "Kuaminika.KobFlow.IncomeCategory\Kuaminika.KobFlow.IncomeCategory.csproj", "{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.API.IncomeCategory", "Kuaminika.KobFlow.API.IncomeCategory\Kuaminika.KobFlow.API.IncomeCategory.csproj", "{001C5B19-7646-4CD6-81B5-39233D21570B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{001C5B19-7646-4CD6-81B5-39233D21570B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{001C5B19-7646-4CD6-81B5-39233D21570B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{001C5B19-7646-4CD6-81B5-39233D21570B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{001C5B19-7646-4CD6-81B5-39233D21570B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
