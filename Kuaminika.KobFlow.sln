@@ -25,7 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.Incom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.ExpenseService", "Kuaminika.KobFlow.ExpenseService\Kuaminika.KobFlow.ExpenseService.csproj", "{7E51632D-F08E-45DA-BB78-4D4B09CB119A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.API.Expense", "Kuaminika.KobFlow.API.Expense\Kuaminika.KobFlow.API.Expense.csproj", "{CF141983-1520-45FF-8990-C42B0B01B5F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.Expense", "Kuaminika.KobFlow.API.Expense\Kuaminika.KobFlow.API.Expense.csproj", "{CF141983-1520-45FF-8990-C42B0B01B5F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.ExpenseCategoryService", "Kuaminika.KobFlow.ExpenseCategoryService\Kuaminika.KobFlow.ExpenseCategoryService.csproj", "{0021BCBB-1FBF-4233-9F45-A9D141CB2139}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.API.ExpenseCategory", "Kuaminika.KobFlow.API.ExpenseCategory\Kuaminika.KobFlow.API.ExpenseCategory.csproj", "{A43B2299-5C42-479A-8795-2875DCB30C1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,14 @@ Global
 		{CF141983-1520-45FF-8990-C42B0B01B5F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF141983-1520-45FF-8990-C42B0B01B5F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF141983-1520-45FF-8990-C42B0B01B5F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0021BCBB-1FBF-4233-9F45-A9D141CB2139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0021BCBB-1FBF-4233-9F45-A9D141CB2139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0021BCBB-1FBF-4233-9F45-A9D141CB2139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0021BCBB-1FBF-4233-9F45-A9D141CB2139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A43B2299-5C42-479A-8795-2875DCB30C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A43B2299-5C42-479A-8795-2875DCB30C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A43B2299-5C42-479A-8795-2875DCB30C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A43B2299-5C42-479A-8795-2875DCB30C1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
