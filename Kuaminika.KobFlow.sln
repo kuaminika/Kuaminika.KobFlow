@@ -11,13 +11,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.Merch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.MerchantService", "Kuaminika.KobFlow.MerchantService\Kuaminika.KobFlow.MerchantService.csproj", "{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.KobHolderService", "Kuaminika.KobFlow.KobHolderService\Kuaminika.KobFlow.KobHolderService.csproj", "{82675FC9-A55D-4C33-A6CA-C2240AB71ADD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.KobHolderService", "Kuaminika.KobFlow.KobHolderService\Kuaminika.KobFlow.KobHolderService.csproj", "{82675FC9-A55D-4C33-A6CA-C2240AB71ADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.API.KobHolder", "Kuaminika.KobFlow.API.KobHolder\Kuaminika.KobFlow.API.KobHolder.csproj", "{DCE3F105-D72A-4D8B-B942-9321B11466D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.KobHolder", "Kuaminika.KobFlow.API.KobHolder\Kuaminika.KobFlow.API.KobHolder.csproj", "{DCE3F105-D72A-4D8B-B942-9321B11466D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.IncomeCategory", "Kuaminika.KobFlow.IncomeCategory\Kuaminika.KobFlow.IncomeCategory.csproj", "{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.IncomeCategory", "Kuaminika.KobFlow.IncomeCategory\Kuaminika.KobFlow.IncomeCategory.csproj", "{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.API.IncomeCategory", "Kuaminika.KobFlow.API.IncomeCategory\Kuaminika.KobFlow.API.IncomeCategory.csproj", "{001C5B19-7646-4CD6-81B5-39233D21570B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.IncomeCategory", "Kuaminika.KobFlow.API.IncomeCategory\Kuaminika.KobFlow.API.IncomeCategory.csproj", "{001C5B19-7646-4CD6-81B5-39233D21570B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.IncomeSourceService", "Kuaminika.KobFlow.IncomeSourceService\Kuaminika.KobFlow.IncomeSourceService.csproj", "{4E3F9017-320D-4AE5-9A1C-27D106E9EE86}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.IncomeSource", "Kuaminika.KobFlow.API.IncomeSource\Kuaminika.KobFlow.API.IncomeSource.csproj", "{F954B85F-F2C0-4403-8E8F-6D501CE9B1CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.ExpenseService", "Kuaminika.KobFlow.ExpenseService\Kuaminika.KobFlow.ExpenseService.csproj", "{7E51632D-F08E-45DA-BB78-4D4B09CB119A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.API.Expense", "Kuaminika.KobFlow.API.Expense\Kuaminika.KobFlow.API.Expense.csproj", "{CF141983-1520-45FF-8990-C42B0B01B5F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,14 +49,6 @@ Global
 		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDC1A9B2-D0F2-41A7-B2DD-26A5B18A3989}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{001C5B19-7646-4CD6-81B5-39233D21570B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{001C5B19-7646-4CD6-81B5-39233D21570B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{001C5B19-7646-4CD6-81B5-39233D21570B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{001C5B19-7646-4CD6-81B5-39233D21570B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82675FC9-A55D-4C33-A6CA-C2240AB71ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82675FC9-A55D-4C33-A6CA-C2240AB71ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82675FC9-A55D-4C33-A6CA-C2240AB71ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +57,30 @@ Global
 		{DCE3F105-D72A-4D8B-B942-9321B11466D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCE3F105-D72A-4D8B-B942-9321B11466D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCE3F105-D72A-4D8B-B942-9321B11466D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA99CE5C-25F8-4DBB-A7F8-D6292B681DF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{001C5B19-7646-4CD6-81B5-39233D21570B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{001C5B19-7646-4CD6-81B5-39233D21570B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{001C5B19-7646-4CD6-81B5-39233D21570B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{001C5B19-7646-4CD6-81B5-39233D21570B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E3F9017-320D-4AE5-9A1C-27D106E9EE86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E3F9017-320D-4AE5-9A1C-27D106E9EE86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E3F9017-320D-4AE5-9A1C-27D106E9EE86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E3F9017-320D-4AE5-9A1C-27D106E9EE86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F954B85F-F2C0-4403-8E8F-6D501CE9B1CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F954B85F-F2C0-4403-8E8F-6D501CE9B1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F954B85F-F2C0-4403-8E8F-6D501CE9B1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F954B85F-F2C0-4403-8E8F-6D501CE9B1CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E51632D-F08E-45DA-BB78-4D4B09CB119A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E51632D-F08E-45DA-BB78-4D4B09CB119A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E51632D-F08E-45DA-BB78-4D4B09CB119A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E51632D-F08E-45DA-BB78-4D4B09CB119A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF141983-1520-45FF-8990-C42B0B01B5F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF141983-1520-45FF-8990-C42B0B01B5F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF141983-1520-45FF-8990-C42B0B01B5F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF141983-1520-45FF-8990-C42B0B01B5F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
