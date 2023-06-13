@@ -367,3 +367,5 @@ FodyWeavers.xsd
 /Kuaminika.KobFlow.API.IncomeCategory/appsettings.Development.json
 /Kuaminika.KobFlow.API.Expense/appsettings.json
 /Kuaminika.KobFlow.API.Expense/appsettings.Development.json
+/Kuaminika.KobFlow.API.ExpenseCategory/appsettings.json
+/Kuaminika.KobFlow.API.ExpenseCategory/appsettings.Development.json
