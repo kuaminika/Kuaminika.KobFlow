@@ -30,8 +30,8 @@ jobs:
       uses: canastro/copy-action@0.0.2
       with:
         # Source file
-        source: /Kuaminika.KobFlow.Merchant.Test/testconfig_sample.json
+        source: ${GITHUB_WORKSPACE}/Kuaminika.KobFlow.Merchant.Test/testconfig_sample.json
          # Target file
-        target: /Kuaminika.KobFlow.Merchant.Test/testconfig.json
+        target: ${GITHUB_WORKSPACE}/Kuaminika.KobFlow.Merchant.Test/testconfig.json
     - name: Test
       run: dotnet test --no-build --verbosity normal
