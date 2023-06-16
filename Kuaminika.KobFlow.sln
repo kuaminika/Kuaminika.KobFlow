@@ -27,9 +27,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.ExpenseSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.Expense", "Kuaminika.KobFlow.API.Expense\Kuaminika.KobFlow.API.Expense.csproj", "{CF141983-1520-45FF-8990-C42B0B01B5F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.ExpenseCategoryService", "Kuaminika.KobFlow.ExpenseCategoryService\Kuaminika.KobFlow.ExpenseCategoryService.csproj", "{0021BCBB-1FBF-4233-9F45-A9D141CB2139}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.ExpenseCategoryService", "Kuaminika.KobFlow.ExpenseCategoryService\Kuaminika.KobFlow.ExpenseCategoryService.csproj", "{0021BCBB-1FBF-4233-9F45-A9D141CB2139}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.API.ExpenseCategory", "Kuaminika.KobFlow.API.ExpenseCategory\Kuaminika.KobFlow.API.ExpenseCategory.csproj", "{A43B2299-5C42-479A-8795-2875DCB30C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.ExpenseCategory", "Kuaminika.KobFlow.API.ExpenseCategory\Kuaminika.KobFlow.API.ExpenseCategory.csproj", "{A43B2299-5C42-479A-8795-2875DCB30C1B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.API.Income", "Kuaminika.KobFlow.API.Income\Kuaminika.KobFlow.API.Income.csproj", "{0C4B9FDC-2C85-4AF9-BA06-F58A7B01F5A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.IncomeService", "Kuaminika.KobFlow.IncomeService\Kuaminika.KobFlow.IncomeService.csproj", "{8E520393-871C-4234-AB6B-49B0BBF754C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Income", "Income", "{DE2C974E-0F39-4728-900F-3993CA5A1440}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.Income.Test", "Kuaminika.KobFlow.Income.Test\Kuaminika.KobFlow.Income.Test.csproj", "{2B4D608B-589D-4C6F-B487-5B2E71EB607E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,9 +101,26 @@ Global
 		{A43B2299-5C42-479A-8795-2875DCB30C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A43B2299-5C42-479A-8795-2875DCB30C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A43B2299-5C42-479A-8795-2875DCB30C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4B9FDC-2C85-4AF9-BA06-F58A7B01F5A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4B9FDC-2C85-4AF9-BA06-F58A7B01F5A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4B9FDC-2C85-4AF9-BA06-F58A7B01F5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4B9FDC-2C85-4AF9-BA06-F58A7B01F5A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E520393-871C-4234-AB6B-49B0BBF754C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E520393-871C-4234-AB6B-49B0BBF754C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E520393-871C-4234-AB6B-49B0BBF754C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E520393-871C-4234-AB6B-49B0BBF754C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B4D608B-589D-4C6F-B487-5B2E71EB607E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B4D608B-589D-4C6F-B487-5B2E71EB607E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B4D608B-589D-4C6F-B487-5B2E71EB607E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B4D608B-589D-4C6F-B487-5B2E71EB607E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0C4B9FDC-2C85-4AF9-BA06-F58A7B01F5A7} = {DE2C974E-0F39-4728-900F-3993CA5A1440}
+		{8E520393-871C-4234-AB6B-49B0BBF754C9} = {DE2C974E-0F39-4728-900F-3993CA5A1440}
+		{2B4D608B-589D-4C6F-B487-5B2E71EB607E} = {DE2C974E-0F39-4728-900F-3993CA5A1440}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E3A56C4-442D-40DA-9B5B-5CE3FC150E02}
