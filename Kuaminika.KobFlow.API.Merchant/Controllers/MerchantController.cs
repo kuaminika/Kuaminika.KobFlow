@@ -44,6 +44,7 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
         }
 
         [HttpPost(Name = "AddMerchants")]
+        [Route("Add")]
         public KRequestReceipt<MerchantModel> Add(MerchantModel addMe)
         {
             try
@@ -65,6 +66,7 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
 
 
         [HttpPost(Name = "DeleteMerchant")]
+        [Route("Delete")]
         public KRequestReceipt<MerchantModel> Delete(MerchantModel victim)
         {
             try
@@ -85,6 +87,8 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
         }
 
         [HttpPost(Name = "UpdateMerchant")]
+
+        [Route("Update")]
         public KRequestReceipt<MerchantModel> Update(MerchantModel victim)
         {
             try
