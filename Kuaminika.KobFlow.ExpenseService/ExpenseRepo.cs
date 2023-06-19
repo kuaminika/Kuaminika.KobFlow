@@ -22,6 +22,13 @@ namespace Kuaminika.KobFlow.ExpenseService
             foreach (var p in q.GetType().GetProperties())
             {
                 if (!map.Has(p.PropertyType)) continue;
+                if (p.PropertyType == typeof(string)) {
+                    string value = p.GetValue(q).ToString();
+                    value = value ?? "";
+                   value =  value.Replace("'", "\'\'");
+                    reslt.Add(p.Name, value, map.Get(p.PropertyType));
+                    continue;
+                }
                 reslt.Add(p.Name, p.GetValue(q), map.Get(p.PropertyType));
             }
 
@@ -56,7 +63,7 @@ namespace Kuaminika.KobFlow.ExpenseService
             model.OwnerId = parameters.Get<int>("OwnerId");
             model.MerchantId = parameters.Get<int>("MerchantId");
             model.MerchantName = parameters.Get<string>("MerchantName");
-            model.Amount = parameters.Get<int>("Amount");
+            model.Amount = parameters.Get<decimal>("Amount");
             model.CreatedDate = parameters.Get<DateTime>("CreatedDate");
             model.CategoryId = parameters.Get<int>("CategoryId");
             model.CategoryName = parameters.Get<string>("CategoryName");
@@ -79,7 +86,7 @@ namespace Kuaminika.KobFlow.ExpenseService
             logTool.LogTrace(query, methodName);
             KWriteResult outcome = dataGateway.ExecuteInsert(query);
             ExpenseModel recorded = this.FindById(outcome.LastInsertedId);
-
+            logTool.logObject(outcome);
             logTool.LogTrace("ending", methodName);
             return recorded;
 
@@ -91,7 +98,7 @@ namespace Kuaminika.KobFlow.ExpenseService
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? $"{GetType().Name}.FindById" : method.Name;
             logTool.LogTrace("starting", methodName);
-            string query = $"SELECT {this.selectAllQuery} where id = {id}";
+            string query = $" {this.selectAllQuery} where e.id = {id}";
             logTool.LogTrace(query, methodName);
             ExpenseModel result = dataGateway.ExecuteReadOneQuery<ExpenseModel>(query);
             logTool.LogTrace("ending", methodName);

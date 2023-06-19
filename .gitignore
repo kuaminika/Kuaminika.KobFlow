@@ -369,3 +369,4 @@ FodyWeavers.xsd
 /Kuaminika.KobFlow.API.Expense/appsettings.Development.json
 /Kuaminika.KobFlow.API.ExpenseCategory/appsettings.json
 /Kuaminika.KobFlow.API.ExpenseCategory/appsettings.Development.json
+/Kuaminika.KobFlow.Expense.Test/testconfig.json

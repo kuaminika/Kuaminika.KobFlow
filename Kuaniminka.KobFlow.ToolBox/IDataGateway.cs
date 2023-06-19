@@ -17,25 +17,30 @@ namespace Kuaniminka.KobFlow.ToolBox
     public class DataGateway : IDataGateway
     {
         private string connStr;
-     //   private KMysql_KDBAbstraction dbAbstraction;
 
         public DataGateway(string connString)
         {
             this.connStr = connString;
-       //    this.dbAbstraction = new KMysql_KDBAbstraction(connString);
         }
 
 
         public KWriteResult ExecuteInsert(string query)
         {
-            
-                KWriteResult r = new KWriteResult();
-                using (MySqlConnection conn = new MySqlConnection(connStr))
-                {
-                    r.LastInsertedId =  conn.Execute(query);
-                   
-                }
-                return r;           
+
+                KWriteResult result = new KWriteResult();
+                MySqlConnection conn = new MySqlConnection(this.connStr);
+                conn.Open();
+
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                result.AffectedRowCount = cmd.ExecuteNonQuery();
+                result.LastInsertedId = cmd.LastInsertedId;
+
+                conn.Close();
+
+
+                return result;
+           
         }
 
         public T ExecuteReadOneQuery<T>(string query)

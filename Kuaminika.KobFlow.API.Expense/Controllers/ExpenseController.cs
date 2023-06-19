@@ -44,6 +44,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
         }
 
         [HttpPost(Name = "Add")]
+        [Route("Add")]
         public KRequestReceipt<ExpenseModel> Add(ExpenseModel addMe)
         {
             try
@@ -65,6 +66,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
 
 
         [HttpPost(Name = "Delete")]
+        [Route("Delete")]
         public KRequestReceipt<ExpenseModel> Delete(ExpenseModel victim)
         {
             try
@@ -85,6 +87,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
         }
 
         [HttpPost(Name = "Update")]
+        [Route("Update")]
         public KRequestReceipt<ExpenseModel> Update(ExpenseModel victim)
         {
             try
