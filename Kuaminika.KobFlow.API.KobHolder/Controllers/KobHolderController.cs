@@ -44,6 +44,7 @@ namespace Kuaminika.KobFlow.API.KobHolder.Controllers
         }
 
         [HttpPost(Name = "AddKobHolder")]
+        [Route("Add")]
         public KRequestReceipt<KobHolderModel> Add(KobHolderModel addMe)
         {
             try
@@ -65,6 +66,7 @@ namespace Kuaminika.KobFlow.API.KobHolder.Controllers
 
 
         [HttpPost(Name = "DeleteKobHolder")]
+        [Route("Delete")]
         public KRequestReceipt<KobHolderModel> Delete(KobHolderModel victim)
         {
             try
@@ -85,6 +87,7 @@ namespace Kuaminika.KobFlow.API.KobHolder.Controllers
         }
 
         [HttpPost(Name = "UpdateKobHolder")]
+        [Route("Update")]
         public KRequestReceipt<KobHolderModel> Update(KobHolderModel victim)
         {
             try

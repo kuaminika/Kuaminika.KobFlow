@@ -44,6 +44,7 @@ namespace Kuaminika.KobFlow.API.Income.Controllers
         }
 
         [HttpPost(Name = "Add")]
+        [Route("Add")]
         public KRequestReceipt<IncomeModel> Add(IncomeModel addMe)
         {
             try
@@ -65,6 +66,7 @@ namespace Kuaminika.KobFlow.API.Income.Controllers
 
 
         [HttpPost(Name = "Delete")]
+        [Route("Delete")]
         public KRequestReceipt<IncomeModel> Delete(IncomeModel victim)
         {
             try
@@ -85,6 +87,7 @@ namespace Kuaminika.KobFlow.API.Income.Controllers
         }
 
         [HttpPost(Name = "Update")]
+        [Route("Update")]
         public KRequestReceipt<IncomeModel> Update(IncomeModel victim)
         {
             try
