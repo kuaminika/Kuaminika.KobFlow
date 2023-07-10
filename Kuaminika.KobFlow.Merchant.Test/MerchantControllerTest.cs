@@ -72,6 +72,35 @@ namespace Kuaminika.KobFlow.Merchant.Test
         }
 
         [Test]
+        public void TestAddingMerchantWithApostrophe()
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? "" : method.Name;
+
+            logTool.Log("starting test", methodName);
+
+
+            var result = specimen.Get();
+            int amount = result.Subject.Count();
+
+            logTool.Log($"amount before:{amount}", methodName);
+
+            var addResult = specimen.Add(new MerchantModel { Name = $"from{methodName}'s test-{amount}" });
+
+            logTool.logObject(addResult);
+
+
+            result = specimen.Get();
+            int afterAmount = result.Subject.Count;
+            logTool.Log($"amount after:{afterAmount}", methodName);
+
+            logTool.logObject(result, methodName);
+
+            logTool.Log("end test", methodName);
+
+            Assert.IsTrue(afterAmount > amount && addResult.Error == false);
+        }
+        [Test]
         public void TestGetRemovingMerchants()
         {
             var method = System.Reflection.MethodBase.GetCurrentMethod();
@@ -105,6 +134,45 @@ namespace Kuaminika.KobFlow.Merchant.Test
             Assert.IsTrue(afterAmount < amount && transactionResult.Error == false);
         }
 
+        [Test]
+        public void TestRemovingAlreadyAssociatedToExpense()
+        {
+
+          
+                var method = System.Reflection.MethodBase.GetCurrentMethod();
+                string methodName = method == null ? "" : method.Name;
+
+
+                logTool.Log("starting test", methodName);
+
+                KRequestReceipt<List<MerchantModel_Assigned>> assignedRecords = specimen.AllAssignedRecords();
+
+                var bait = assignedRecords.Subject[0];
+            try
+            {
+              var resp =    specimen.Delete(bait);
+                bool repliedNicely = ($"something went wrong - {bait.Name} cannot be deleted. It is assigned to {bait.ExpenseCount} expenses" == resp.Message);
+                if(repliedNicely)
+                {
+                    Assert.IsTrue(repliedNicely);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                bool goodMsg = (ex.Message == $"{bait.Name} cannot be deleted. It is assigned to {bait.ExpenseCount} expenses");
+
+                if (!goodMsg) throw ex;
+
+                Assert.IsTrue(goodMsg);
+                return;
+            }
+
+            Assert.Fail("should have gotten an exception ");
+
+
+
+        }
         [Test]
         public void TestGetUpdateMerchant()
         {

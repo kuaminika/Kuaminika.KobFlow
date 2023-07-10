@@ -15,25 +15,14 @@ namespace Kuaminika.KobFlow.KobHolderService
 
             logTool = args.LogTool;
         }
-        private DynamicParameters findDynamicParams<T>(T q)
-        {
-            var map = KSqlMapper.Create;
-            DynamicParameters reslt = new DynamicParameters();
-            foreach (var p in q.GetType().GetProperties())
-            {
-                if (!map.Has(p.PropertyType)) continue;
-                reslt.Add(p.Name, p.GetValue(q), map.Get(p.PropertyType));
-            }
-
-            return reslt;
-        }
+    
 
 
         private KobHolderModel validateParameters(KobHolderModel testMe)
         {
             KobHolderModel model = new KobHolderModel();
 
-            DynamicParameters parameters = findDynamicParams(testMe);
+            var parameters = dataGateway.ScanParameters(testMe);
 
             model.Id = parameters.Get<int>("Id");
             model.Name = parameters.Get<string>("Name");
@@ -115,6 +104,28 @@ namespace Kuaminika.KobFlow.KobHolderService
             return recorded;
 
 
+        }
+
+        public KobHolderModel_Count UsedHolderLikeThis(KobHolderModel victim)
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? $"{GetType().Name}.GetAlls" : method.Name;
+            string query = $@"SELECT k.id as Id, 
+                                    k.name as Name ,
+                                    k.user_id as OwnerId, 
+                                    COUNT(e.id) as ExpenseCount,
+                                    COUNT(i.id) as IncomeCount
+                                 FROM `kobHolder` k
+                            left JOIN `Expense` e on e.account_id = k.id
+                            left JOIN `Income` i on i.account_id = k.id
+                                 where k.id = {victim.Id } and k.name ='{victim.Name}' and k.user_id = {victim.OwnerId}
+                                 GROUP by k.id, k.name, k.user_id; ";
+            logTool.LogTrace("starting", methodName);
+            logTool.LogTrace(query);
+            var result = dataGateway.ExecuteReadManyResult<KobHolderModel_Count>(query);
+            if (result == null) return null;
+            logTool.LogTrace("ending", methodName);
+            return result[0];
         }
     }
 

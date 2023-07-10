@@ -21,6 +21,10 @@ namespace Kuaminika.KobFlow.KobHolderService
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
+
+            if (addMe.OwnerId == 0) throw new Exception($"'{addMe.Name}' needs an owner in order to be recorded");
+
+
             KobHolderModel result = repo.Add(addMe);
             logTool.LogTrace("ending", methodName);
 
@@ -33,6 +37,10 @@ namespace Kuaminika.KobFlow.KobHolderService
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
+
+            KobHolderModel_Count usedHolder= repo.UsedHolderLikeThis(victim);
+            logTool.logObject(usedHolder);
+            if(usedHolder != null && usedHolder.Count>0) throw new Exception($"'{victim.Name}' is associated to  {usedHolder.Count}  recorded");
             KobHolderModel result = repo.Delete(victim);
             logTool.LogTrace("ending", methodName);
 

@@ -15,25 +15,7 @@ namespace Kuaminika.KobFlow.ExpenseService
 
             logTool = args.LogTool;
         }
-        private DynamicParameters findDynamicParams<T>(T q)
-        {
-            var map = KSqlMapper.Create;
-            DynamicParameters reslt = new DynamicParameters();
-            foreach (var p in q.GetType().GetProperties())
-            {
-                if (!map.Has(p.PropertyType)) continue;
-                if (p.PropertyType == typeof(string)) {
-                    string value = p.GetValue(q).ToString();
-                    value = value ?? "";
-                   value =  value.Replace("'", "\'\'");
-                    reslt.Add(p.Name, value, map.Get(p.PropertyType));
-                    continue;
-                }
-                reslt.Add(p.Name, p.GetValue(q), map.Get(p.PropertyType));
-            }
-
-            return reslt;
-        }
+      
 
         string selectAllQuery = @"SELECT 
                                      e.id as `Id`
@@ -56,7 +38,8 @@ namespace Kuaminika.KobFlow.ExpenseService
         {
             ExpenseModel model = new ExpenseModel();
 
-            DynamicParameters parameters = findDynamicParams(testMe);
+          
+            var parameters = dataGateway.ScanParameters(testMe);
 
             model.Id = parameters.Get<int>("Id");
             model.Description = parameters.Get<string>("Description");

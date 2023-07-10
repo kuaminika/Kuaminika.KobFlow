@@ -1,4 +1,4 @@
-﻿using Dapper;
+﻿
 using Kuaniminka.KobFlow.ToolBox;
 
 namespace Kuaminika.KobFlow.MerchantService
@@ -15,25 +15,12 @@ namespace Kuaminika.KobFlow.MerchantService
 
             logTool = args.LogTool;
         }
-        private DynamicParameters findDynamicParams<T>(T q)
-        {
-            var map = KSqlMapper.Create;
-            DynamicParameters reslt = new DynamicParameters();
-            foreach (var p in q.GetType().GetProperties())
-            {
-                if (!map.Has(p.PropertyType)) continue;
-                reslt.Add(p.Name, p.GetValue(q), map.Get(p.PropertyType));
-            }
-
-            return reslt;
-        }
-
+    
 
         private MerchantModel validateParameters(MerchantModel testMe)
         {
             MerchantModel model = new MerchantModel();
-
-            DynamicParameters parameters = findDynamicParams(testMe);
+            var parameters = dataGateway.ScanParameters(testMe);
 
             model.Id = parameters.Get<int>("Id");
             model.Name = parameters.Get<string>("Name");
@@ -114,6 +101,26 @@ namespace Kuaminika.KobFlow.MerchantService
 
             return recorded;
 
+
+        }
+
+        public List<MerchantModel_Assigned> GetAllAssignedRecords()
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? $"{GetType().Name}.GetAllAssignedRecords" : method.Name;
+            string query = $@"SELECT s.id as Id,
+                                s.name as Name , 
+                                s.user_id as OwnerId , 
+                                count(e.id) as ExpenseCount 
+                            FROM `Entity` s 
+                            inner join `Expense` e on s.id = e.store_id
+                            group by s.id, s.name,s.user_id";
+
+
+            logTool.LogTrace("starting", methodName);
+            var result = dataGateway.ExecuteReadManyResult<MerchantModel_Assigned>(query);
+            logTool.LogTrace("ending", methodName);
+            return result;
 
         }
     }

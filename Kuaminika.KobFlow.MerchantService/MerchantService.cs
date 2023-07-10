@@ -29,11 +29,29 @@ namespace Kuaminika.KobFlow.MerchantService
 
         public MerchantModel DeleteMerchant(MerchantModel victim)
         {
+           var baitList =  GetAllAssignedRecords().Where(m => m.Id == victim.Id); 
+            if ( baitList!= null && baitList.Count()>0)
+            {
+                //TODO this error message should not be hardcoded
+                var bait = baitList.First();
+                throw new Exception($"{bait.Name} cannot be deleted. It is assigned to {bait.ExpenseCount} expenses");
+            }
 
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
             MerchantModel result = repo.DeleteMerchant(victim);
+            logTool.LogTrace("ending", methodName);
+
+            return result;
+        }
+
+        public List<MerchantModel_Assigned> GetAllAssignedRecords()
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? "" : method.Name;
+            logTool.LogTrace("starting", methodName);
+            List<MerchantModel_Assigned> result = repo.GetAllAssignedRecords();
             logTool.LogTrace("ending", methodName);
 
             return result;

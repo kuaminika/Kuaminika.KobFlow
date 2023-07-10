@@ -9,5 +9,6 @@ namespace Kuaminika.KobFlow.MerchantService
         MerchantModel AddMerchant(MerchantModel addMe);
         MerchantModel DeleteMerchant(MerchantModel victim);
         MerchantModel UpdateMerchant(MerchantModel victim);
+        List<MerchantModel_Assigned> GetAllAssignedRecords();
     }
 }

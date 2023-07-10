@@ -6,6 +6,7 @@
         KobHolderModel Delete(KobHolderModel victim);
         KobHolderModel Update(KobHolderModel victim);
         List<KobHolderModel> GetAll();
+        KobHolderModel_Count UsedHolderLikeThis(KobHolderModel victim);
     }
 
 

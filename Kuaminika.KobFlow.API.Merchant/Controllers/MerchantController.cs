@@ -19,6 +19,7 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
         }
 
         [HttpGet(Name = "GetMerchants")]
+        [Route("/")]
         public KRequestReceipt<List<MerchantModel>> Get()
         {
             List<MerchantModel> merchants = new List<MerchantModel>();
@@ -32,6 +33,24 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
                 var method = System.Reflection.MethodBase.GetCurrentMethod();
                 logTool.LogError($"{ex.Message}\n{ex.StackTrace}", method == null ? "" : method.Name);
                 var result =     new KRequestReceipt<List<MerchantModel>>(merchants);
+                return handleError(result, ex);
+            }
+        }
+
+        [Route("GetAssigned")]
+        public KRequestReceipt<List<MerchantModel_Assigned>> AllAssignedRecords()
+        {
+            List<MerchantModel_Assigned> merchants = new List<MerchantModel_Assigned>();
+            try
+            {
+                merchants = merchantService.GetAllAssignedRecords();
+                return new KRequestReceipt<List<MerchantModel_Assigned>>(merchants);
+            }
+            catch (Exception ex)
+            {
+                var method = System.Reflection.MethodBase.GetCurrentMethod();
+                logTool.LogError($"{ex.Message}\n{ex.StackTrace}", method == null ? "" : method.Name);
+                var result = new KRequestReceipt<List<MerchantModel_Assigned>>(merchants);
                 return handleError(result, ex);
             }
         }

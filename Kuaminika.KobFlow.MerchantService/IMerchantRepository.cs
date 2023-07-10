@@ -6,6 +6,7 @@
         MerchantModel DeleteMerchant(MerchantModel victim);
         MerchantModel UpdateMerchant(MerchantModel victim);
         List<MerchantModel> GetAllMerchants();
+        List<MerchantModel_Assigned> GetAllAssignedRecords();
     }
 
 
