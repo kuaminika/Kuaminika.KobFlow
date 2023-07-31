@@ -6,7 +6,7 @@
 trigger:
 - master
 
-pool: 'ec2'
+pool: 'korosol'
 
 variables:
   solution: '**/*.sln'
