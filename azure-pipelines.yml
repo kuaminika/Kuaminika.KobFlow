@@ -13,14 +13,17 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
+
 steps:
-- task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+  - task: NuGetToolInstaller@1
 
+  - task: NuGetCommand@2
+    inputs:
+        restoreSolution: '$(solution)'
+  
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'build'
 
-- task: DotNetCoreCLI@2
-  inputs:
-     command: 'build'
+  - bash: echo "hihi"
