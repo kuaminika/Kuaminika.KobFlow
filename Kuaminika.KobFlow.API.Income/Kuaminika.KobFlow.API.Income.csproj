@@ -16,4 +16,10 @@
     <ProjectReference Include="..\Kuaniminka.KobFlow.ToolBox\Kuaniminka.KobFlow.ToolBox.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

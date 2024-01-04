@@ -49,7 +49,8 @@ namespace Kuaminika.KobFlow.IncomeService
         {
             IncomeModel model = new IncomeModel();
 
-            DynamicParameters parameters = findDynamicParams(testMe);
+
+            var parameters = dataGateway.ScanParameters(testMe); // findDynamicParams(testMe);
 
             model.Id = parameters.Get<int>("Id");
             model.Description = parameters.Get<string>("Description");
