@@ -33,7 +33,7 @@ namespace Kuaminika.KobFlow.IncomeCategory
         {
             IncomeCategoryModel model = new IncomeCategoryModel();
 
-            DynamicParameters parameters = findDynamicParams(testMe);
+            var parameters = dataGateway.ScanParameters(testMe); // findDynamicParams(testMe);
 
             model.Id = parameters.Get<int>("Id");
             model.Name = parameters.Get<string>("Name");

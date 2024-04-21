@@ -18,7 +18,7 @@ namespace Kuaminika.KobFlow.API.IncomeSource.Controllers
             logTool = container.LogTool;
         }
 
-        [HttpGet(Name = "GetKobHolder")]
+        [HttpGet(Name = "GetIncomeSource")]
         public KRequestReceipt<List<IncomeSourceModel>> Get()
         {
             List<IncomeSourceModel> merchants = new List<IncomeSourceModel>();
@@ -43,12 +43,13 @@ namespace Kuaminika.KobFlow.API.IncomeSource.Controllers
             return result;
         }
 
-        [HttpPost(Name = "AddKobHolder")]
+        [HttpPost(Name = "AddIncomeSource")]
         [Route("Add")]
         public KRequestReceipt<IncomeSourceModel> Add(IncomeSourceModel addMe)
         {
             try
             {
+                logTool.Log("just got summonned to add ", this.GetType().Name + ".Add");
                 IncomeSourceModel recorded = service.Add(addMe);
 
                 KRequestReceipt<IncomeSourceModel> receipt = new KRequestReceipt<IncomeSourceModel>(recorded);
@@ -65,7 +66,7 @@ namespace Kuaminika.KobFlow.API.IncomeSource.Controllers
         }
 
 
-        [HttpPost(Name = "DeleteKobHolder")]
+        [HttpPost(Name = "DeleteIncomeSource")]
         [Route("Delete")]
         public KRequestReceipt<IncomeSourceModel> Delete(IncomeSourceModel victim)
         {
@@ -86,7 +87,7 @@ namespace Kuaminika.KobFlow.API.IncomeSource.Controllers
             }
         }
 
-        [HttpPost(Name = "UpdateKobHolder")]
+        [HttpPost(Name = "UpdateIncomeSource")]
         [Route("Update")]
         public KRequestReceipt<IncomeSourceModel> Update(IncomeSourceModel victim)
         {

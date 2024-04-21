@@ -33,8 +33,8 @@ namespace Kuaminika.KobFlow.IncomeSourceService
         {
             IncomeSourceModel model = new IncomeSourceModel();
 
-            DynamicParameters parameters = findDynamicParams(testMe);
-
+            var parameters = dataGateway.ScanParameters(testMe); // findDynamicParams(testMe);
+            logTool.Log("I did scan parameters", "IncomeSourceRepo.validateParameters");
             model.Id = parameters.Get<int>("Id");
             model.Name = parameters.Get<string>("Name");
             model.OwnerId = parameters.Get<int>("OwnerId");
