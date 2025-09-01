@@ -2,7 +2,7 @@ name: Test Basic Setup
 
 on:
   push:
-    branches: [main, pipelineTry]  # Test on both branches
+    branches: [ pipelineTry]  # Test on both branches
 
 jobs:
   test-basic:
