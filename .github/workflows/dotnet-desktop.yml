@@ -25,6 +25,7 @@ jobs:
 
     - name: Run tests
       run: dotnet test --no-build --verbosity normal
+      
 
     # Add deployment steps here based on your needs
     # For example, deploy to Azure Web App:
