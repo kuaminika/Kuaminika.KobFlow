@@ -1,8 +1,8 @@
 name: Test SSH Connection Only
 
 on:
-  workflow_dispatch:
-
+  push:
+    branches: [ dev/pipelineTry]  # Test on both branches
 jobs:
   test-ssh:
     runs-on: ubuntu-latest
