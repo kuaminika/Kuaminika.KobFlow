@@ -41,7 +41,7 @@ jobs:
         
         # Example for multiple web apps - adjust to your solution structure
         dotnet publish ./Kuaminika.KobFlow.API.Expense/Kuaminika.KobFlow.API.Expense.csproj -c Release -o publish/WebApp1 --no-build
-      #  dotnet publish src/WebApp2/WebApp2.csproj -c Release -o publish/WebApp2 --no-build
+        #  dotnet publish src/WebApp2/WebApp2.csproj -c Release -o publish/WebApp2 --no-build
         
         echo "Published projects:"
         find publish/ -maxdepth 2 -type d -name "*" | head -10
