@@ -1,0 +1,83 @@
+name: 🚀 Deploy to A2 Hosting
+
+on:
+  push:
+    branches: [dev/pipelineTry]  # Change to your production branch
+  workflow_dispatch:   # Allows manual triggering from GitHub UI
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+  SSH_USER: ${{ secrets.SSH_USER }}
+  SSH_PORT: ${{ secrets.SSH_PORT }}
+  DEPLOY_PATH: '/PROD_THINGS/dotnet/kobflow/github_actions_delivery'  # ← UPDATE THIS to your A2 path
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout code
+    - name: 📦 Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Setup .NET
+    - name: ⚙️ Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    # Step 3: Build and publish
+    - name: 🔄 Restore dependencies
+      run: dotnet restore
+
+    - name: 🏗️ Build solution
+      run: dotnet build --no-restore --configuration Release
+
+    - name: 📤 Publish projects
+      run: |
+        # Update these paths to match your actual projects!
+        echo "Publishing ASP.NET projects..."
+        
+        # Example for multiple web apps - adjust to your solution structure
+        dotnet publish ./Kuaminika.KobFlow.API.Expense/Kuaminika.KobFlow.API.Expense.csproj -c Release -o publish/WebApp1 --no-build
+      #  dotnet publish src/WebApp2/WebApp2.csproj -c Release -o publish/WebApp2 --no-build
+        
+        echo "Published projects:"
+        find publish/ -maxdepth 2 -type d -name "*" | head -10
+
+    # Step 4: SSH Setup
+    - name: 🔑 Install SSH key
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    # Step 5: Test connection first (optional but recommended)
+    - name: 🧪 Test SSH connection
+      run: |
+        echo "Testing connection to ${{ env.SSH_HOST }}:${{ env.SSH_PORT }}..."
+        ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "echo '✅ SSH connection successful!'; whoami; pwd"
+
+    # Step 6: Deploy using rsync
+    - name: 🚀 Deploy to A2 Hosting
+      run: |
+        echo "Deploying to ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.DEPLOY_PATH }}"
+        rsync -avz --delete -e "ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no" \
+          publish/ ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.DEPLOY_PATH }}/
+
+    # Step 7: Verify deployment
+    - name: ✅ Verify deployment
+      run: |
+        echo "Checking deployed files on server..."
+        ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "ls -la ${{ env.DEPLOY_PATH }}/ && echo '🎉 Deployment successful!'"
+
+    # Optional: Restart services if needed
+    - name: 🔄 Restart applications (if needed)
+      run: |
+        echo "If you need to restart services, add commands here:"
+        # Example: ssh -p ${{ env.SSH_PORT }} ${{ env.SSH_USER }}@${{ env.SSH_HOST }} "pkill -f dotnet"
+        # Or restart via supervisor/systemd
