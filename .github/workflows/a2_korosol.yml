@@ -10,7 +10,7 @@ env:
   SSH_HOST: ${{ secrets.SSH_HOST }}
   SSH_USER: ${{ secrets.SSH_USER }}
   SSH_PORT: ${{ secrets.SSH_PORT }}
-  DEPLOY_PATH: 'home/hduque/PROD_THINGS/dotnet/kobflow/github_actions_delivery'  # ← UPDATE THIS to your A2 path
+  DEPLOY_PATH: '~/PROD_THINGS/dotnet/kobflow/github_actions_delivery'  # ← UPDATE THIS to your A2 path
 
 jobs:
   build-and-deploy:
