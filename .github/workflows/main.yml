@@ -1,0 +1,17 @@
+name: Super Simple Test
+
+on: [push]
+
+jobs:
+  super-simple-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Say hello
+      run: |
+        echo "🎉 GitHub Actions is working!"
+        echo "Branch: $GITHUB_REF"
+        echo "We have these files:"
+        ls -la
