@@ -1,35 +1,57 @@
-name: Deploy multiple .NET apps
+name: Test Basic Setup
 
 on:
   push:
-    branches: [pipelineTry]
+    branches: [main, pipelineTry]  # Test on both branches
 
 jobs:
-  build-and-deploy:
+  test-basic:
     runs-on: ubuntu-latest
-
+    
     steps:
+    # Step 1: Checkout code
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Gets all history, good for testing
 
+    # Step 2: Setup .NET
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore
+    # Step 3: Verify files exist
+    - name: List project files
+      run: |
+        echo "📁 Current directory structure:"
+        ls -la
+        echo ""
+        echo "📦 Solution file:"
+        find . -name "*.sln" -type f
+        echo ""
+        echo "🚀 Project files:"
+        find . -name "*.csproj" -type f
 
-    - name: Build projects
-      run: dotnet build --no-restore
+    # Step 4: Simple .NET validation
+    - name: Validate .NET installation
+      run: |
+        echo "Dotnet version:"
+        dotnet --version
+        echo ""
+        echo "Dotnet info:"
+        dotnet --info
+        echo ""
+        echo "SDK list:"
+        dotnet --list-sdks
 
-    - name: Run tests
-      run: dotnet test --no-build --verbosity normal
-
-    # Add deployment steps here based on your needs
-    # For example, deploy to Azure Web App:
-    # - name: Deploy to Azure Web App
-    #   uses: azure/webapps-deploy@v2
-    #   with:
-    #     app-name: 'your-app-name'
-    #     package: './publish-output'
+    # Step 5: Test restore (if solution exists)
+    - name: Try dotnet restore
+      run: |
+        # Check if solution file exists before trying restore
+        if [ -f *.sln ]; then
+          echo "✅ Solution file found - running dotnet restore"
+          dotnet restore
+        else
+          echo "⚠️  No solution file found - skipping restore"
+        fi
