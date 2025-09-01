@@ -1,15 +1,8 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
-
 name: Deploy multiple .NET apps
 
 on:
   push:
-    branches: [ pipelineTry ]
- 
+    branches: [pipelineTry]
 
 jobs:
   build-and-deploy:
@@ -26,3 +19,17 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
+
+    - name: Build projects
+      run: dotnet build --no-restore
+
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+
+    # Add deployment steps here based on your needs
+    # For example, deploy to Azure Web App:
+    # - name: Deploy to Azure Web App
+    #   uses: azure/webapps-deploy@v2
+    #   with:
+    #     app-name: 'your-app-name'
+    #     package: './publish-output'
