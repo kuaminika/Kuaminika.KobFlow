@@ -11,7 +11,6 @@ env:
   SSH_USER: ${{ secrets.SSH_USER }}
   SSH_PORT: ${{ secrets.SSH_PORT }}
   SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-  # Use the EXACT path from your A2 account - check with 'pwd' when you SSH in
   DEPLOY_PATH: 'PROD_THINGS/dotnet/kobflow/github_actions_delivery'
 
 jobs:
@@ -39,24 +38,30 @@ jobs:
     - name: 🔑 Install SSHpass
       run: sudo apt-get install -y sshpass
 
-    - name: 🛠️ Prepare Deployment Directory on A2
+    - name: 🧪 Test directory access
       run: |
-        echo "Preparing deployment directory on A2..."
-        # First, ensure the base directory exists and has right permissions
+        echo "Testing if we can write to existing directory..."
         sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "mkdir -p ${{ env.DEPLOY_PATH }} && chmod 755 ${{ env.DEPLOY_PATH}}"
+          "touch ${{ env.DEPLOY_PATH }}/test_write.txt && echo '✅ Can write to directory' || echo '❌ Cannot write to directory'"
 
-    - name: 🚀 Deploy using SCP (better for A2)
+    - name: 🗑️ Clean existing directory (optional)
       run: |
-        echo "Deploying files to A2..."
-        # Deploy files one by one or in batches
+        echo "Cleaning existing directory..."
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "rm -rf ${{ env.DEPLOY_PATH }}/*"
+
+    - name: 🚀 Deploy using SCP (no directory creation)
+      run: |
+        echo "Deploying files using SCP..."
+        # Deploy the contents without trying to create directories
         sshpass -p "${{ env.SSH_PASSWORD }}" scp -P ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no -r \
           publish/* ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.DEPLOY_PATH }}/
 
-    - name: 🔒 Set correct permissions
+    - name: 🔒 Set permissions
       run: |
-        echo "Setting file permissions on A2..."
+        echo "Setting file permissions..."
         sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
           "chmod 755 -R ${{ env.DEPLOY_PATH }} && find ${{ env.DEPLOY_PATH }} -type f -exec chmod 644 {} \;"
