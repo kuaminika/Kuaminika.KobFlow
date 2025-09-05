@@ -66,11 +66,11 @@ jobs:
       run: |
         sshpass -p "${{ env.SSH_PASSWORD }}" scp -P ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no -r \
           publish/${{ matrix.name }}/* \
-          ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:/home/izaje/PROD_THINGS/dotnet/kobflow/${{ matrix.name }}/
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:/home/hduque/PROD_THINGS/dotnet/kobflow/github_actions_delivery/${{ matrix.name }}/
 
     - name: ✅ Verify deployment
       if: steps.changes.outputs.changed == 'true'
       run: |
         sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "ls -la /home/izaje/PROD_THINGS/dotnet/kobflow/${{ matrix.name }} && echo '🎉 ${{ matrix.name }} deployed!'"
+          "ls -la /home/hduque/PROD_THINGS/dotnet/kobflow/github_actions_delivery/${{ matrix.name }} && echo '🎉 ${{ matrix.name }} deployed!'"
