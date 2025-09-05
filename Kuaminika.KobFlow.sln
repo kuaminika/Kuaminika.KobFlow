@@ -36,6 +36,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.IncomeService", "Kuaminika.KobFlow.IncomeService\Kuaminika.KobFlow.IncomeService.csproj", "{8E520393-871C-4234-AB6B-49B0BBF754C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Income", "Income", "{DE2C974E-0F39-4728-900F-3993CA5A1440}"
+	ProjectSection(SolutionItems) = preProject
+		tmp.txt = tmp.txt
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuaminika.KobFlow.Income.Test", "Kuaminika.KobFlow.Income.Test\Kuaminika.KobFlow.Income.Test.csproj", "{2B4D608B-589D-4C6F-B487-5B2E71EB607E}"
 EndProject
