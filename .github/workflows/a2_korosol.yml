@@ -3,6 +3,10 @@ name: 🚀 Deploy to A2 Hosting
 on:
   push:
     branches: [dev/pipelineTry]
+    paths:
+      - 'Kuaminika.KobFlow.API.Expense/**'
+      - 'Kuaminika.KobFlow.API.Income/**'
+      - 'Kuaminika.KobFlow.API.Holder/**'
   workflow_dispatch:
 
 env:
@@ -11,63 +15,62 @@ env:
   SSH_USER: ${{ secrets.SSH_USER }}
   SSH_PORT: ${{ secrets.SSH_PORT }}
   SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-  DEPLOY_PATH: 'PROD_THINGS/dotnet/kobflow/github_actions_delivery'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: Expense
+            path: Kuaminika.KobFlow.API.Expense
+          - name: Income
+            path: Kuaminika.KobFlow.API.Income
+          - name: Holder
+            path: Kuaminika.KobFlow.API.Holder
 
     steps:
     - name: 📦 Checkout code
       uses: actions/checkout@v4
 
+    - name: 🔍 Check if ${{ matrix.name }} project changed
+      id: changes
+      run: |
+        if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep "^${{ matrix.path }}/"; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: ⏭️ Skip if no changes
+      if: steps.changes.outputs.changed == 'false'
+      run: echo "No changes in ${{ matrix.name }}, skipping..."
+
     - name: ⚙️ Setup .NET
+      if: steps.changes.outputs.changed == 'true'
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: 🔄 Restore and Build
+    - name: 📤 Publish project
+      if: steps.changes.outputs.changed == 'true'
       run: |
-        dotnet restore
-        dotnet build --configuration Release --no-restore
-
-    - name: 📤 Publish projects
-      run: |
-        dotnet publish ./Kuaminika.KobFlow.API.Expense/Kuaminika.KobFlow.API.Expense.csproj -c Release -o publish/ --nologo
+        dotnet publish ./${{ matrix.path }}/${{ matrix.name }}.csproj -c Release -o publish/${{ matrix.name }}
 
     - name: 🔑 Install SSHpass
+      if: steps.changes.outputs.changed == 'true'
       run: sudo apt-get install -y sshpass
 
-    - name: 🧪 Test directory access
+    - name: 🚀 Deploy ${{ matrix.name }}
+      if: steps.changes.outputs.changed == 'true'
       run: |
-        echo "Testing if we can write to existing directory..."
-        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
-          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "touch ${{ env.DEPLOY_PATH }}/test_write.txt && echo '✅ Can write to directory' || echo '❌ Cannot write to directory'"
-
-    - name: 🗑️ Clean existing directory (optional)
-      run: |
-        echo "Cleaning existing directory..."
-        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
-          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "rm -rf ${{ env.DEPLOY_PATH }}/*"
-
-    - name: 🚀 Deploy using SCP (no directory creation)
-      run: |
-        echo "Deploying files using SCP..."
-        # Deploy the contents without trying to create directories
         sshpass -p "${{ env.SSH_PASSWORD }}" scp -P ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no -r \
-          publish/* ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.DEPLOY_PATH }}/
-
-    - name: 🔒 Set permissions
-      run: |
-        echo "Setting file permissions..."
-        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
-          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "chmod 755 -R ${{ env.DEPLOY_PATH }} && find ${{ env.DEPLOY_PATH }} -type f -exec chmod 644 {} \;"
+          publish/${{ matrix.name }}/* \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:/home/izaje/PROD_THINGS/dotnet/kobflow/${{ matrix.name }}/
 
     - name: ✅ Verify deployment
+      if: steps.changes.outputs.changed == 'true'
       run: |
         sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "ls -la ${{ env.DEPLOY_PATH }} && echo '🎉 Deployment successful!'"
+          "ls -la /home/izaje/PROD_THINGS/dotnet/kobflow/${{ matrix.name }} && echo '🎉 ${{ matrix.name }} deployed!'"
