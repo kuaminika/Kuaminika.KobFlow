@@ -2,82 +2,72 @@ name: 🚀 Deploy to A2 Hosting
 
 on:
   push:
-    branches: [dev/pipelineTry]  # Change to your production branch
-  workflow_dispatch:   # Allows manual triggering from GitHub UI
+    branches: [dev/pipelineTry]
+  workflow_dispatch:
 
 env:
   DOTNET_VERSION: '8.0.x'
   SSH_HOST: ${{ secrets.SSH_HOST }}
   SSH_USER: ${{ secrets.SSH_USER }}
-  SSH_PORT: ${{ secrets.SSH_PORT }}
-  DEPLOY_PATH: '~/PROD_THINGS/dotnet/kobflow/github_actions_delivery'  # ← UPDATE THIS to your A2 path
+  SSH_PORT: ${{ secrets.SSH_PORT }}  # A2 usually uses port 7822 for SSH!
+  DEPLOY_PATH: '~/PROD_THINGS/dotnet/kobflow/github_actions_delivery'
+  SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}  # Often needed for A2
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout code
     - name: 📦 Checkout code
       uses: actions/checkout@v4
 
-    # Step 2: Setup .NET
     - name: ⚙️ Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    # Step 3: Build and publish
-    - name: 🔄 Restore dependencies
-      run: dotnet restore
-
-    - name: 🏗️ Build solution
-      run: dotnet build --no-restore --configuration Release
+    - name: 🔄 Restore and Build
+      run: |
+        dotnet restore
+        dotnet build --configuration Release --no-restore
 
     - name: 📤 Publish projects
       run: |
-        # Update these paths to match your actual projects!
-        echo "Publishing ASP.NET projects..."
-        
-        # Example for multiple web apps - adjust to your solution structure
-        dotnet publish ./Kuaminika.KobFlow.API.Expense/Kuaminika.KobFlow.API.Expense.csproj -c Release -o publish/WebApp1 --no-build
-        #  dotnet publish src/WebApp2/WebApp2.csproj -c Release -o publish/WebApp2 --no-build
-        
-        echo "Published projects:"
-        find publish/ -maxdepth 2 -type d -name "*" | head -10
+        # Publish your specific projects
+        dotnet publish ./Kuaminika.KobFlow.API.Expense/Kuaminika.KobFlow.API.Expense.csproj -c Release -o publish/ --nologo
 
-    # Step 4: SSH Setup
-    - name: 🔑 Install SSH key
-      uses: webfactory/ssh-agent@v0.8.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: 🔑 Install SSHpass for password authentication
+      run: sudo apt-get install -y sshpass
 
-    # Step 5: Test connection first (optional but recommended)
-    - name: 🧪 Test SSH connection
+    - name: 🧪 Test SSH connection (with password)
       run: |
         echo "Testing connection to ${{ env.SSH_HOST }}:${{ env.SSH_PORT }}..."
-        ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "echo '✅ SSH connection successful!'; whoami; pwd"
+          "echo '✅ SSH connection successful!'; pwd"
 
-    # Step 6: Deploy using rsync
-    - name: 🚀 Deploy to A2 Hosting
+    - name: 🚀 Deploy using SCP (more reliable than rsync for A2)
       run: |
-        echo "Deploying to ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.DEPLOY_PATH }}"
-        rsync -avz --delete -e "ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no" \
-          publish/ ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.DEPLOY_PATH }}/
-
-    # Step 7: Verify deployment
-    - name: ✅ Verify deployment
-      run: |
-        echo "Checking deployed files on server..."
-        ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+        echo "Uploading files to A2 hosting..."
+        
+        # Create deploy directory first
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "ls -la ${{ env.DEPLOY_PATH }}/ && echo '🎉 Deployment successful!'"
+          "mkdir -p ${{ env.DEPLOY_PATH }}"
+        
+        # Upload files using SCP
+        sshpass -p "${{ env.SSH_PASSWORD }}" scp -P ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no -r \
+          publish/* ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:${{ env.DEPLOY_PATH }}/
 
-    # Optional: Restart services if needed
-    - name: 🔄 Restart applications (if needed)
+    - name: ✅ Set permissions on A2 server
       run: |
-        echo "If you need to restart services, add commands here:"
-        # Example: ssh -p ${{ env.SSH_PORT }} ${{ env.SSH_USER }}@${{ env.SSH_HOST }} "pkill -f dotnet"
-        # Or restart via supervisor/systemd
+        echo "Setting file permissions..."
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "chmod 755 -R ${{ env.DEPLOY_PATH }} && find ${{ env.DEPLOY_PATH }} -type f -exec chmod 644 {} \;"
+
+    - name: 📋 Verify deployment
+      run: |
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "ls -la ${{ env.DEPLOY_PATH }} && echo '🎉 Deployment successful!'"
