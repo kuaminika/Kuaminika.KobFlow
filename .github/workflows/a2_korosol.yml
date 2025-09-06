@@ -68,6 +68,33 @@ jobs:
       if: steps.changes.outputs.changed == 'true'
       run: |
         dotnet publish ./${{ matrix.path }}/${{ matrix.path }}.csproj -c Release -o publish/${{ matrix.name }}
+        
+    - name: 📝 Create appsettings.json
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        # Pick the right port secret based on project name
+        if [ "${{ matrix.name }}" = "Expense" ]; then
+          PORT=$EXPENSE_PORT_PROD
+        elif [ "${{ matrix.name }}" = "Income" ]; then
+          PORT=$INCOME_PORT_PROD
+        elif [ "${{ matrix.name }}" = "Holder" ]; then
+          PORT=$HOLDER_PORT_PROD
+        fi
+        
+        cat > publish/${{ matrix.name }}/appsettings.json <<EOL
+        {
+          "Logging": {
+            "LogLevel": {
+              "Default": "Information",
+              "Microsoft.AspNetCore": "Warning"
+            }
+          },
+          "Urls": "http://localhost:$PORT",
+          "AllowedHosts": "$ALLOWED_HOSTS",
+          "connectionString": "${{ secrets.CONNECTION_STRING_PROD }}"
+        }
+        EOL
+
 
     - name: 🔑 Install SSHpass
       if: steps.changes.outputs.changed == 'true'
