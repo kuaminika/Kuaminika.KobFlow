@@ -41,6 +41,11 @@ jobs:
         else
           echo "changed=false" >> $GITHUB_OUTPUT
         fi
+        
+    - name: 🔍 Debug changed files
+      run: |
+        echo "Comparing commits: ${{ github.event.before }} -> ${{ github.sha }}"
+         git diff --name-only ${{ github.event.before }} ${{ github.sha }}
 
     - name: ⏭️ Skip if no changes
       if: steps.changes.outputs.changed == 'false'
