@@ -58,6 +58,11 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: 🗂️ List project files
+      run: |
+        echo "Looking for .csproj under ${{ matrix.path }}"
+        ls -la ${{ matrix.path }} || true
 
     - name: 📤 Publish project
       if: steps.changes.outputs.changed == 'true'
