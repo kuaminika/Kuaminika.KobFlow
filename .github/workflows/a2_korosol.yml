@@ -6,7 +6,11 @@ on:
     paths:
       - 'Kuaminika.KobFlow.API.Expense/**'
       - 'Kuaminika.KobFlow.API.Income/**'
-      - 'Kuaminika.KobFlow.API.Holder/**'
+      - 'Kuaminika.KobFlow.API.KobHolder/**'
+      - 'Kuaminika.KobFlow.API.Merchant/**'
+      - 'Kuaminika.KobFlow.API.ExpenseCategory/**'
+      - 'Kuaminika.KobFlow.API.IncomeCategory/**'
+      - 'Kuaminika.KobFlow.API.IncomeSource/**'
   workflow_dispatch:
 
 env:
@@ -26,8 +30,16 @@ jobs:
             path: Kuaminika.KobFlow.API.Expense
           - name: Income
             path: Kuaminika.KobFlow.API.Income
-          - name: Holder
-            path: Kuaminika.KobFlow.API.Holder
+          - name: KobHolder
+            path: Kuaminika.KobFlow.API.KobHolder            
+          - name: Merchant
+            path: Kuaminika.KobFlow.API.Merchant
+          - name: ExpenseCategory
+            path: Kuaminika.KobFlow.API.ExpenseCategory
+          - name: IncomeCategory
+            path: Kuaminika.KobFlow.API.IncomeCategory            
+          - name: IncomeSource
+            path: Kuaminika.KobFlow.API.IncomeSource
 
     steps:
     - name: 📦 Checkout code
@@ -77,8 +89,16 @@ jobs:
           PORT=${{ vars.EXPENSE_PORT_PROD }}
         elif [ "${{ matrix.name }}" = "Income" ]; then
           PORT=${{ vars.INCOME_PORT_PROD }}
-        elif [ "${{ matrix.name }}" = "Holder" ]; then
+        elif [ "${{ matrix.name }}" = "KobHolder" ]; then
           PORT= ${{ vars.HOLDER_PORT_PROD }}
+        elif [ "${{ matrix.name }}" = "Merchant" ]; then
+          PORT= ${{ vars.MERCHANT_PORT_PROD }}
+        elif [ "${{ matrix.name }}" = "ExpenseCategory" ]; then
+          PORT= ${{ vars.EXPENSE_CATEGORY_PORT_PROD }}          
+        elif [ "${{ matrix.name }}" = "IncomeCategory" ]; then
+          PORT= ${{ vars.INCOME_CATEGORY_PORT_PROD }}          
+        elif [ "${{ matrix.name }}" = "IncomeSource" ]; then
+          PORT= ${{ vars.INCOME_SOURCE_PORT_PROD }}
         fi
         
         cat > publish/${{ matrix.name }}/appsettings.json <<EOL
