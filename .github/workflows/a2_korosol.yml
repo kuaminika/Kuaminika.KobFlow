@@ -67,7 +67,7 @@ jobs:
     - name: 📤 Publish project
       if: steps.changes.outputs.changed == 'true'
       run: |
-        dotnet publish ./${{ matrix.path }}/${{ matrix.name }}.csproj -c Release -o publish/${{ matrix.name }}
+        dotnet publish ./${{ matrix.path }}/${{ matrix.path }}.csproj -c Release -o publish/${{ matrix.name }}
 
     - name: 🔑 Install SSHpass
       if: steps.changes.outputs.changed == 'true'
