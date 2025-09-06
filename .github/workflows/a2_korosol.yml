@@ -90,15 +90,15 @@ jobs:
         elif [ "${{ matrix.name }}" = "Income" ]; then
           PORT=${{ vars.INCOME_PORT_PROD }}
         elif [ "${{ matrix.name }}" = "KobHolder" ]; then
-          PORT= ${{ vars.HOLDER_PORT_PROD }}
+          PORT=${{ vars.HOLDER_PORT_PROD }}
         elif [ "${{ matrix.name }}" = "Merchant" ]; then
-          PORT= ${{ vars.MERCHANT_PORT_PROD }}
+          PORT=${{ vars.MERCHANT_PORT_PROD }}
         elif [ "${{ matrix.name }}" = "ExpenseCategory" ]; then
-          PORT= ${{ vars.EXPENSE_CATEGORY_PORT_PROD }}          
+          PORT=${{ vars.EXPENSE_CATEGORY_PORT_PROD }}          
         elif [ "${{ matrix.name }}" = "IncomeCategory" ]; then
-          PORT= ${{ vars.INCOME_CATEGORY_PORT_PROD }}          
+          PORT=${{ vars.INCOME_CATEGORY_PORT_PROD }}          
         elif [ "${{ matrix.name }}" = "IncomeSource" ]; then
-          PORT= ${{ vars.INCOME_SOURCE_PORT_PROD }}
+          PORT=${{ vars.INCOME_SOURCE_PORT_PROD }}
         fi
         
         cat > publish/${{ matrix.name }}/appsettings.json <<EOL
