@@ -32,6 +32,8 @@ jobs:
     steps:
     - name: 📦 Checkout code
       uses: actions/checkout@v4
+      with:
+          fetch-depth: 0   # fetch full history so 'before' exists
 
     - name: 🔍 Check if ${{ matrix.name }} project changed
       id: changes
