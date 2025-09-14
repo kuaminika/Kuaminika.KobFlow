@@ -2,7 +2,7 @@ name: 🚀 Deploy to A2 Hosting
 
 on:
   push:
-    branches: [dev/pipelineTry]
+    branches: [dev/*]
     paths:
       - 'Kuaminika.KobFlow.API.Expense/**'
       - 'Kuaminika.KobFlow.API.Income/**'
@@ -61,9 +61,6 @@ jobs:
         echo "Comparing commits: ${{ github.event.before }} -> ${{ github.sha }}"
          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
 
-    - name: ⏭️ Skip if no changes
-      if: steps.changes.outputs.changed == 'false'
-      run: echo "No changes in ${{ matrix.name }}, skipping..."
 
     - name: ⚙️ Setup .NET
       if: steps.changes.outputs.changed == 'true'
