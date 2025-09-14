@@ -1,4 +1,4 @@
-name: 🚀 Deploy to A2 Hosting dev
+name: 🚀 Deploy to A2 Hosting dev -
 
 on:
   push:
