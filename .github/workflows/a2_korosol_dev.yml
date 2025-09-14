@@ -3,15 +3,7 @@ name: 🚀 Deploy to A2 Hosting dev -
 on:
   push:
     branches: [dev/*]
-    paths:
-      - 'Kuaminika.KobFlow.API.Expense/**'
-      - 'Kuaminika.KobFlow.API.Income/**'
-      - 'Kuaminika.KobFlow.API.KobHolder/**'
-      - 'Kuaminika.KobFlow.API.Merchant/**'
-      - 'Kuaminika.KobFlow.API.ExpenseCategory/**'
-      - 'Kuaminika.KobFlow.API.IncomeCategory/**'
-      - 'Kuaminika.KobFlow.API.IncomeSource/**'
-  workflow_dispatch:
+ 
 
 env:
   DOTNET_VERSION: '8.0.x'
