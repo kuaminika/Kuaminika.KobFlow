@@ -83,19 +83,19 @@ jobs:
       run: |
         # Pick the right port secret based on project name
         if [ "${{ matrix.name }}" = "Expense" ]; then
-          PORT=${{ vars.EXPENSE_PORT_PROD }}
+          PORT=${{ vars.EXPENSE_PORT_DEV }}
         elif [ "${{ matrix.name }}" = "Income" ]; then
-          PORT=${{ vars.INCOME_PORT_PROD }}
+          PORT=${{ vars.INCOME_PORT_DEV }}
         elif [ "${{ matrix.name }}" = "KobHolder" ]; then
-          PORT=${{ vars.HOLDER_PORT_PROD }}
+          PORT=${{ vars.HOLDER_PORT_DEV }}
         elif [ "${{ matrix.name }}" = "Merchant" ]; then
-          PORT=${{ vars.MERCHANT_PORT_PROD }}
+          PORT=${{ vars.MERCHANT_PORT_DEV }}
         elif [ "${{ matrix.name }}" = "ExpenseCategory" ]; then
-          PORT=${{ vars.EXPENSE_CATEGORY_PORT_PROD }}          
+          PORT=${{ vars.EXPENSE_CATEGORY_PORT_DEV }}          
         elif [ "${{ matrix.name }}" = "IncomeCategory" ]; then
-          PORT=${{ vars.INCOME_CATEGORY_PORT_PROD }}          
+          PORT=${{ vars.INCOME_CATEGORY_PORT_DEV }}          
         elif [ "${{ matrix.name }}" = "IncomeSource" ]; then
-          PORT=${{ vars.INCOME_SOURCE_PORT_PROD }}
+          PORT=${{ vars.INCOME_SOURCE_PORT_DEV }}
         fi
         
         cat > publish/${{ matrix.name }}/appsettings.json <<EOL
@@ -108,7 +108,7 @@ jobs:
           },
           "Urls": "http://localhost:$PORT",
           "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
-          "connectionString": "${{ secrets.CONNECTION_STRING_PROD }}"
+          "connectionString": "${{ secrets.CONNECTION_STRING_DEV }}"
         }
         EOL
 
@@ -122,11 +122,11 @@ jobs:
       run: |
         sshpass -p "${{ env.SSH_PASSWORD }}" scp -P ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no -r \
           publish/${{ matrix.name }}/* \
-          ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:/home/hduque/PROD_THINGS/dotnet/kobflow/github_actions_delivery/${{ matrix.name }}/
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:/home/hduque/DEV_THINGS/dotnet/kobflow/github_actions_delivery/${{ matrix.name }}/
 
     - name: ✅ Verify deployment
       if: steps.changes.outputs.changed == 'true'
       run: |
         sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
-          "ls -la /home/hduque/PROD_THINGS/dotnet/kobflow/github_actions_delivery/${{ matrix.name }} && echo '🎉 ${{ matrix.name }} deployed!'"
+          "ls -la /home/hduque/DEV_THINGS/dotnet/kobflow/github_actions_delivery/${{ matrix.name }} && echo '🎉 ${{ matrix.name }} deployed!'"
