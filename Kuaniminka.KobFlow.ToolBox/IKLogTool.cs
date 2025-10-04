@@ -6,10 +6,9 @@
         bool TraceModeOn { get; set; }
         bool LogWithTime { get; set; }
 
-        void LogError(string message, string location = "");
-
-        void Log(string msg, string location = "");
-        void logObject<T>(T list, string location = "");
-        void LogTrace(string message, string location = "");
+        void LogError(string message, [System.Runtime.CompilerServices.CallerMemberName] string location = "");
+        void Log(string msg, [System.Runtime.CompilerServices.CallerMemberName] string location = "");
+        void logObject<T>(T obj, [System.Runtime.CompilerServices.CallerMemberName] string location = "");
+        void LogTrace(string message, [System.Runtime.CompilerServices.CallerMemberName] string location = "");
     }
 }
