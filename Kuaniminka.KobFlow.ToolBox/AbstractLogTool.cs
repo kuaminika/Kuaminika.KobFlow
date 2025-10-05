@@ -23,18 +23,31 @@
         protected abstract void _doLogError(string message);
         protected abstract void _doLog(string message);
         protected abstract void _doTrace(string message);
-
+        /// <summary>
+        /// will log only if LogIsOff is false
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="location"></param>
         public void Log(string msg, string location = "")
         {
             if (LogIsOff) return;
             _doLog(formatLocation(location) + msg);
         }
-
+        /// <summary>
+        /// will always log the error even if log is off
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="location"></param>
         public void LogError(string message, string location = "")
         {
             _doLogError(formatLocation(location) + $"ERROR: {message}");
         }
-
+        /// <summary>
+        /// will log the object as a json string if log is not off
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="location"></param>
         public void logObject<T>(T list, string location = "")
         {
             if (LogIsOff) return;
@@ -48,7 +61,11 @@
                 LogError(ex.Message, GetType().Name+".logOBJ");
             }
         }
-
+        /// <summary>
+        /// will log only if TraceModeOn is true
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="location"></param>
         public void LogTrace(string message, string location = "")
         {
             if (!TraceModeOn) return;
