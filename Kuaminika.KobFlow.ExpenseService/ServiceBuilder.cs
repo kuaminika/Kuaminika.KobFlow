@@ -19,7 +19,7 @@ namespace Kuaminika.KobFlow.ExpenseService
             this.LogTool = new ConsoleLogTool(kJSONParser);
             this.LogTool.TraceModeOn = true;
             this.LogTool.LogWithTime = true;
-            this.dbGateway = new DataGateway(conenctionString);
+            this.dbGateway = new DataGateway(conenctionString, this.LogTool );
             this.merchantRepo = new ExpenseRepo(new ExpenseRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
 
         }
