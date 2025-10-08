@@ -39,14 +39,28 @@ jobs:
       with:
           fetch-depth: 0   # fetch full history so 'before' exists
 
+    - name: Compare commits safely
+      run: |
+        if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+          echo "No previous commit to compare against."
+        else
+          git diff ${{ github.event.before }} ${{ github.sha }}
+        fi
+
+
+
     - name: 🔍 Check if ${{ matrix.name }} project changed
       id: changes
       run: |
-        if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep "^${{ matrix.path }}/"; then
-          echo "changed=true" >> $GITHUB_OUTPUT
-        else
-          echo "changed=false" >> $GITHUB_OUTPUT
-        fi
+        if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+          echo "No previous commit to compare against."
+        else           
+            if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep "^${{ matrix.path }}/"; then
+              echo "changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "changed=false" >> $GITHUB_OUTPUT
+            fi
+        end
         
     - name: 🔍 Debug changed files
       run: |
