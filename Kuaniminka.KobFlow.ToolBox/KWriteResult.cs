@@ -4,5 +4,6 @@
     {
         public int AffectedRowCount { get; internal set; }
         public long LastInsertedId { get; internal set; }
+        public string ErrorMessage { get; internal set; }
     }
 }

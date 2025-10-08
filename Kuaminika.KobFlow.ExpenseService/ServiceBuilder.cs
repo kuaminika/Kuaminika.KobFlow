@@ -16,10 +16,25 @@ namespace Kuaminika.KobFlow.ExpenseService
         {
             string conenctionString = config.GetStringValue("connectionString");
             kJSONParser = new KNewtonJSonParser();
-            this.LogTool = new ConsoleLogTool(kJSONParser);
+            var consoleLog = new ConsoleLogTool(kJSONParser);
+            consoleLog.Log(conenctionString);
+            var dbGatewayLog = new DataGateway(conenctionString, consoleLog);
+            var logTool = LogToolFactory.New.CreateDbWriter(new LogToolFactoryToolbox
+            {
+                ObjParser = new KNewtonJSonParser(),
+                DbGateway = dbGatewayLog ,
+                BackupLogTool = consoleLog
+            });
+
+            this.LogTool = logTool;
             this.LogTool.TraceModeOn = true;
             this.LogTool.LogWithTime = true;
-            this.dbGateway = new DataGateway(conenctionString);
+
+
+
+            this.dbGateway = new DataGateway(conenctionString, consoleLog); ;// new DataGateway(conenctionString, this.LogTool );
+
+           
             this.merchantRepo = new ExpenseRepo(new ExpenseRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
 
         }

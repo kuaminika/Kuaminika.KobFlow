@@ -5,17 +5,17 @@
         public ConsoleLogTool(IKJSONParser objParser) : base(objParser) { }
          
 
-        protected override void _doLog(string message)
+        protected override void _doLog(string message, string location = "")
         {
             Console.WriteLine(message);
         }
 
-        protected override void _doLogError(string message)
+        protected override void _doLogError(string message, string location = "")
         {
             Console.WriteLine(message);
         }
 
-        protected override void _doTrace(string message)
+        protected override void _doTrace(string message, string location = "")
         {
             Console.WriteLine(message);
         }

@@ -375,3 +375,7 @@ Kuaminika.KobFlow.API.Income/appsettings.json
 /Kuaminika.KobFlow.API.Merchant/appsettings.json
 /Kuaminika.KobFlow.API.IncomeSource/appsettings.json
 /Kuaminika.KobFlow.API.KobHolder/appsettings.json
+/Kuaminika.KobFlow.ToolBox.Test/testSettings.json
+/Kuaminika.KobFlow.Income.Test/testconfig.json
+/Kuaminika.KobFlow.Merchant.Test/testconfig.json
+/Kuaminika.KobFlow.Expense.Test/testconfig.json
