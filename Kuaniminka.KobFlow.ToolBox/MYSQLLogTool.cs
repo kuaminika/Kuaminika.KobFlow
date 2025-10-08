@@ -75,17 +75,20 @@ namespace Kuaniminka.KobFlow.ToolBox
         }
         protected override void _doLog(string message, string location = "unknown")
         {
-           _= writeLogToDbAsync(message, location,KLogLevel.Info);
+            this._doLog(message,location);
+            _ = writeLogToDbAsync(message, location,KLogLevel.Info);
         }
 
         protected override void _doLogError(string message, string location = "unknown")
         {
 
+            this._doLogError(message, location);
             _ = writeLogToDbAsync(message,location,KLogLevel.Error);
         }
 
         protected override void _doTrace(string message, string location = "unknown")
         {
+            this._doTrace(message, location);
             _ = writeLogToDbAsync(message, location,KLogLevel.Trace);
         }
     }
