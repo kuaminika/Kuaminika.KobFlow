@@ -60,7 +60,7 @@ jobs:
             else
               echo "changed=false" >> $GITHUB_OUTPUT
             fi
-        end
+        fi
         
     - name: 🔍 Debug changed files
       run: |
