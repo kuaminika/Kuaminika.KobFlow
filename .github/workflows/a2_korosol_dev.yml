@@ -129,6 +129,14 @@ jobs:
         sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
           "echo 'Connected as:' && whoami && echo 'Folder permissions:' && ls -ld /home/hduque/DEV_THINGS/dotnet/kobflow/github_actions_delivery/Expense"
+      
+    - name: 🔍 Permission check
+      run: |
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "echo Connected as: $(whoami) && touch /home/hduque/DEV_THINGS/dotnet/kobflow/github_actions_delivery/Expense/test.txt && echo 'Write succeeded!' || echo 'Write failed!'"
+    
+
 
     - name: 🚀 Deploy ${{ matrix.name }}
       if: steps.changes.outputs.changed == 'true'
