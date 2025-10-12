@@ -135,7 +135,13 @@ jobs:
         sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
           ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
           "echo Connected as: $(whoami) && touch /home/hduque/DEV_THINGS/dotnet/kobflow/github_actions_delivery/Expense/test.txt && echo 'Write succeeded!' || echo 'Write failed!'"
-    
+  
+    - name: 🛑 Stop remote service before deploy
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "sudo systemctl stop kobflow-${{ matrix.name }}.service || true"  
 
 
     - name: 🚀 Deploy ${{ matrix.name }}
