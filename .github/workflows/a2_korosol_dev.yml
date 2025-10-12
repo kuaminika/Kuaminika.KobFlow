@@ -123,6 +123,13 @@ jobs:
       if: steps.changes.outputs.changed == 'true'
       run: sudo apt-get install -y sshpass
 
+    - name: 🧩 Debug SSH connection
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "echo 'Connected as:' && whoami && echo 'Folder permissions:' && ls -ld /home/hduque/DEV_THINGS/dotnet/kobflow/github_actions_delivery/Expense"
+
     - name: 🚀 Deploy ${{ matrix.name }}
       if: steps.changes.outputs.changed == 'true'
       run: |
