@@ -1,4 +1,6 @@
-﻿namespace Kuaniminka.KobFlow.ToolBox
+﻿using System.Runtime.CompilerServices;
+
+namespace Kuaniminka.KobFlow.ToolBox
 {
     public abstract class AbstractLogTool : IKLogTool
     {
@@ -15,32 +17,45 @@
 
         public bool TraceModeOn { get; set; }
 
-        private string formatLocation(string location)
+        protected virtual string formatLocation(string location)
         {
             return $"[{time}{location}]:";
         }
 
-        protected abstract void _doLogError(string message);
-        protected abstract void _doLog(string message);
-        protected abstract void _doTrace(string message);
-
-        public void Log(string msg, string location = "")
+        protected abstract void _doLogError(string message, string location = "");
+        protected abstract void _doLog(string message, string location = "");
+        protected abstract void _doTrace(string message, string location = "");
+        /// <summary>
+        /// will log only if LogIsOff is false
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="location"></param>
+        public void Log(string msg, [CallerMemberName]string location = "")
         {
             if (LogIsOff) return;
-            _doLog(formatLocation(location) + msg);
+            _doLog(formatLocation(location) + msg,location);
         }
-
-        public void LogError(string message, string location = "")
+        /// <summary>
+        /// will always log the error even if log is off
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="location"></param>
+        public void LogError(string message, [CallerMemberName] string location = "")
         {
-            _doLogError(formatLocation(location) + $"ERROR: {message}");
+            _doLogError(formatLocation(location) + $"ERROR: {message}",location);
         }
-
-        public void logObject<T>(T list, string location = "")
+        /// <summary>
+        /// will log the object as a json string if log is not off
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="location"></param>
+        public void logObject<T>(T list, [CallerMemberName] string location = "")
         {
             if (LogIsOff) return;
             try
             {
-                _doLog(formatLocation(location) + _parser.Serialize(list));
+                _doLog(formatLocation(location) + _parser.Serialize(list), location);
             }
             catch (Exception ex)
             {
@@ -48,12 +63,16 @@
                 LogError(ex.Message, GetType().Name+".logOBJ");
             }
         }
-
-        public void LogTrace(string message, string location = "")
+        /// <summary>
+        /// will log only if TraceModeOn is true
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="location"></param>
+        public void LogTrace(string message, [CallerMemberName] string location = "")
         {
             if (!TraceModeOn) return;
 
-            _doTrace(formatLocation(location) + message);
+            _doTrace(formatLocation(location) + message, location);
         }
     }
 }
