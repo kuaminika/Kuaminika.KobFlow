@@ -29,7 +29,8 @@ namespace Kuaminika.KobFlow.ExpenseService
             this.LogTool = logTool;
             this.LogTool.TraceModeOn = true;
             this.LogTool.LogWithTime = true;
-
+            this.LogTool.ServiceName = "ExpenseService";
+            this.LogTool.ApplicationName= "KobFlow";
 
 
             this.dbGateway = new DataGateway(conenctionString, consoleLog); ;// new DataGateway(conenctionString, this.LogTool );

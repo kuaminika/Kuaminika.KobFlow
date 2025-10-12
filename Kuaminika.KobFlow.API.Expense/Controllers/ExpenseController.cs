@@ -21,17 +21,21 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
         [HttpGet(Name = "Get")]
         public KRequestReceipt<List<ExpenseModel>> Get()
         {
-            List<ExpenseModel> merchants = new List<ExpenseModel>();
+            logTool.Action ="GetAllExpenses";
+            logTool.LogTrace("starting", "ExpenseController.Get");
+            List<ExpenseModel> expenses = new List<ExpenseModel>();
             try
             {
-                merchants = service.GetAll();
-                return new KRequestReceipt<List<ExpenseModel>>(merchants);
+                expenses = service.GetAll();
+
+                return new KRequestReceipt<List<ExpenseModel>>(expenses);
             }
             catch (Exception ex)
             {
                 var method = System.Reflection.MethodBase.GetCurrentMethod();
                 logTool.LogError($"{ex.Message}\n{ex.StackTrace}", method == null ? "" : method.Name);
-                var result = new KRequestReceipt<List<ExpenseModel>>(merchants);
+                var result = new KRequestReceipt<List<ExpenseModel>>(expenses);
+
                 return handleError(result, ex);
             }
         }
@@ -49,6 +53,8 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
         {
             try
             {
+                logTool.Action = "AddExpense";
+                logTool.LogTrace("starting", "ExpenseController.Add");
                 ExpenseModel recorded = service.Add(addMe);
 
                 KRequestReceipt<ExpenseModel> receipt = new KRequestReceipt<ExpenseModel>(recorded);
@@ -71,6 +77,8 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
         {
             try
             {
+                logTool.Action= "DeleteExpense";
+                logTool.LogTrace("starting", "ExpenseController.Delete");
                 ExpenseModel recorded = service.Delete(victim);
 
                 KRequestReceipt<ExpenseModel> receipt = new KRequestReceipt<ExpenseModel>(recorded);
@@ -92,6 +100,8 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
         {
             try
             {
+                logTool.Action = "UpdateExpense";
+                logTool.LogTrace("starting", "ExpenseController.Update");
                 ExpenseModel updatded = service.Update(victim);
 
                 KRequestReceipt<ExpenseModel> receipt = new KRequestReceipt<ExpenseModel>(updatded);

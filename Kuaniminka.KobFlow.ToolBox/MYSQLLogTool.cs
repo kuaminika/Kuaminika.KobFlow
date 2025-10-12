@@ -1,4 +1,5 @@
 ﻿using MySqlConnector.Logging;
+using System.Diagnostics;
 
 namespace Kuaniminka.KobFlow.ToolBox
 {
@@ -29,8 +30,12 @@ namespace Kuaniminka.KobFlow.ToolBox
 
         protected override string formatLocation(string location)
         {
+            var frame = new StackTrace().GetFrame(2); // 2 = caller of the caller
+            var type = frame.GetMethod().DeclaringType;
+
             return $"";
         }
+
 
         private async  Task writeLogToDbAsync(string message, string location = "",KLogLevel logLevel =KLogLevel.Info)
         {
@@ -43,13 +48,17 @@ namespace Kuaniminka.KobFlow.ToolBox
                 {
                     backupLogTool.Log("trying to log to db"+ Task.CurrentId);
                     KWriteResult re =   dbGateway.ExecuteInsert($@"
-                        INSERT INTO db_log (log_level, location, message, log_time)
-                        VALUES (@level, @location, @message,@log_time)", new Dictionary<string, object>
+                        INSERT INTO db_log (log_level, location, message, log_time,service,application,action)
+                        VALUES (@level, @location, @message,@log_time,@service,@application,@action)", new Dictionary<string, object>
                             {
-                            {"@level",logLevel},
-                            {"@location",location},
-                            {"@message",message},
-                              {"@log_time",DateTime.Now   }
+                                {"@level",logLevel},
+                                {"@location",location},
+                                {"@message",message},
+                                {"@log_time",DateTime.Now   },
+                                {"@service",ServiceName??"unknown" },
+                                {"@application",ApplicationName??"unknown" },
+                                {"@action",Action??"unknown"    }
+
                         });
 
                     backupLogTool.logObject(Task.CurrentId+ "--> done running test");
