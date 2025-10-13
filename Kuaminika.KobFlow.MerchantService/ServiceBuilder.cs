@@ -15,9 +15,18 @@ namespace Kuaminika.KobFlow.MerchantService
         {
             string conenctionString = config.GetStringValue("connectionString");
             kJSONParser = new KNewtonJSonParser();
-            this.LogTool = new ConsoleLogTool(kJSONParser);
+            var consoleLog = new ConsoleLogTool(kJSONParser);
+            this.LogTool = LogToolFactory.New.CreateDbWriter(new LogToolFactoryToolbox
+            {
+                ObjParser = new KNewtonJSonParser(),
+                DbGateway = new DataGateway(conenctionString, consoleLog),
+                BackupLogTool = consoleLog
+            });
+            //TODO : make log.traceModeOn configurable 
             this.LogTool.TraceModeOn = true;
             this.LogTool.LogWithTime = true;
+            this.LogTool.ServiceName = "MerchantService";
+            this.LogTool.ApplicationName = "KobFlow";            
             this.dbGateway = new DataGateway(conenctionString, this.LogTool);
             this.merchantRepo = new MerchantRepo(new MerchantRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
 
