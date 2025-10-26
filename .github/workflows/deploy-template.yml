@@ -41,6 +41,12 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: 🗂️ List project files
+        run: |
+          echo "Looking for .csproj under ${{ matrix.path }}"
+          ls -la ${{ matrix.path }} || true
+
+
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.path }}
 
