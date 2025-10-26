@@ -1,0 +1,74 @@
+### 1️⃣ .github/workflows/deploy-template.yml
+# This reusable workflow handles the shared build + deploy steps for any .NET service.
+
+name: 🚀 Reusable Deploy Template
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+      path:
+        required: true
+        type: string
+      systemd_service_name:
+        required: true
+        type: string
+    secrets:
+      SSH_HOST:
+        required: true
+      SSH_USER:
+        required: true
+      SSH_PASSWORD:
+        required: true
+      SSH_PORT:
+        required: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      DOTNET_VERSION: '8.0.x'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ inputs.path }}
+
+      - name: Build
+        run: dotnet build ${{ inputs.path }} --configuration Release --no-restore
+
+      - name: Publish
+        run: dotnet publish ${{ inputs.path }} --configuration Release --output ./publish/${{ inputs.service_name }}
+
+      - name: Copy files to A2 Hosting
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ./publish/${{ inputs.service_name }}/
+          target: /home/${{ secrets.SSH_USER }}/Kuaminika/${{ inputs.service_name }}
+
+      - name: Restart service on A2 Hosting
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            sudo systemctl daemon-reload
+            sudo systemctl restart ${{ inputs.systemd_service_name }}
+            sudo systemctl status ${{ inputs.systemd_service_name }} --no-pager
+
