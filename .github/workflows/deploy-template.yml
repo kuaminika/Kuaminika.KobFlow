@@ -1,6 +1,3 @@
-### 1️⃣ .github/workflows/deploy-template.yml
-# This reusable workflow handles the shared build + deploy steps for any .NET service.
-
 name: 🚀 Reusable Deploy Template
 
 on:
@@ -9,12 +6,19 @@ on:
       service_name:
         required: true
         type: string
-      path:
+      service_project_path:
         required: true
         type: string
       systemd_service_name:
         required: true
         type: string
+      deploy_target:
+        required: true
+        type: string
+      dotnet_version:
+        required: false
+        type: string
+        default: "8.0.x"
     secrets:
       SSH_HOST:
         required: true
@@ -22,59 +26,55 @@ on:
         required: true
       SSH_PASSWORD:
         required: true
-      SSH_PORT:
+      SSH_KEY:
         required: true
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    env:
-      DOTNET_VERSION: '8.0.x'
-
     steps:
-      - name: Checkout code
+      - name: 📦 Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: ⚙️ Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: ${{ inputs.dotnet_version }}
 
-      - name: 🗂️ List project files
+      - name: 🗂️ Verify project path
         run: |
-          echo "Looking for .csproj under ${{ matrix.path }}"
-          ls -la ${{ matrix.path }} || true
+          echo "Project path: ${{ inputs.service_project_path }}"
+          ls -la ${{ inputs.service_project_path }} || exit 1
 
+      - name: 🧱 Restore dependencies
+        run: dotnet restore ${{ inputs.service_project_path }}
 
-      - name: Restore dependencies
-        run: dotnet restore ${{ inputs.path }}
+      - name: 🏗️ Build
+        run: dotnet build ${{ inputs.service_project_path }} --configuration Release --no-restore
 
-      - name: Build
-        run: dotnet build ${{ inputs.path }} --configuration Release --no-restore
+      - name: 🚀 Publish
+        run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./publish/${{ inputs.service_name }}
 
-      - name: Publish
-        run: dotnet publish ${{ inputs.path }} --configuration Release --output ./publish/${{ inputs.service_name }}
-
-      - name: Copy files to A2 Hosting
+      - name: 📤 Upload to server (A2 Hosting)
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: ./publish/${{ inputs.service_name }}/
-          target: /home/${{ secrets.SSH_USER }}/Kuaminika/${{ inputs.service_name }}
+          target: ${{ inputs.deploy_target }}
 
-      - name: Restart service on A2 Hosting
+      - name: 🔁 Restart systemd service
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            echo "Restarting service: ${{ inputs.systemd_service_name }}"
             sudo systemctl daemon-reload
             sudo systemctl restart ${{ inputs.systemd_service_name }}
             sudo systemctl status ${{ inputs.systemd_service_name }} --no-pager
-
