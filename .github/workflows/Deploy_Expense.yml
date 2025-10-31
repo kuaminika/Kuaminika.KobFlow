@@ -12,7 +12,7 @@ jobs:
       service_name: ${{vars.SERVICE_PREFIX}}.Expense
       systemd_service_name: ${{vars.SERVICE_PREFIX}}.Expense.service
       deploy_target: ${{vars.OUTER_PATH}}/${{vars.APP_PATH}}
-      service_project_path: /etc/systemd/system/${{vars.SERVICE_PREFIX}}.Expense.service
+      service_project_path: Kuaminika.KobFlow.API.Expense
     secrets:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_USER: ${{ secrets.SSH_USER }}
