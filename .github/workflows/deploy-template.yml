@@ -24,8 +24,6 @@ on:
         required: true
       SSH_USER:
         required: true
-      SSH_PASSWORD:
-        required: true
       SSH_KEY:
         required: true
 
