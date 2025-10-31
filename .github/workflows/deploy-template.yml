@@ -30,7 +30,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    environment: ${{ github.ref == 'refs/heads/master' && 'PROD' || 'DEV' }}
     steps:
       - name: 📦 Checkout code
         uses: actions/checkout@v4
