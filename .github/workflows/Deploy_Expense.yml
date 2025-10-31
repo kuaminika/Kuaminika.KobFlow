@@ -9,8 +9,10 @@ jobs:
   use-deploy-template:
     uses: ./.github/workflows/deploy-template.yml
     with:
-      service_name: Expense
-      service_path: Kuaminika.KobFlow.API.Expense
+      service_name: ${{vars.SERVICE_PREFIX}}.Expense.service
+      systemd_service_name: ${{vars.SERVICE_PREFIX}}.Expense.service
+      path: ${{vars.OUTER_PATH}}/${{vars.APP_PATH}}
+      service_path: /etc/systemd/system/${{vars.SERVICE_PREFIX}}.Expense.service
       environment:  ${{ github.ref == 'refs/heads/master' && 'PROD' || 'DEV' }}
     secrets:
       SSH_HOST: ${{ secrets.SSH_HOST }}
