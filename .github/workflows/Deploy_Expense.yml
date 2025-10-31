@@ -1,0 +1,18 @@
+name: 🚀 Deploy Expense Service
+
+on:
+  push:
+    branches:
+      - dev/*
+
+jobs:
+  use-deploy-template:
+    uses: ./.github/workflows/deploy-template.yml
+    with:
+      service_name: Expense
+      service_path: Kuaminika.KobFlow.API.Expense
+      environment:  ${{ github.ref == 'refs/heads/master' && 'PROD' || 'DEV' }}
+    secrets:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
