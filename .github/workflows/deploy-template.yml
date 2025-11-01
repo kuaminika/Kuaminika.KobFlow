@@ -73,7 +73,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ./publish/${{ inputs.service_project_path }}/
+          source: ./publish/${{ inputs.service_project_path }}/*
           target: ${{env.deploy_target}}
 
       - name: 🔁 Restart systemd service
@@ -84,7 +84,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            echo "Restarting service: $systemd_service_name"
+            echo "Restarting service: ${{env.systemd_service_name}}"
             sudo systemctl daemon-reload
-            sudo systemctl restart $systemd_service_name
-            sudo systemctl status $systemd_service_name --no-pager
+            sudo systemctl restart  ${{env.systemd_service_name}}
+            sudo systemctl status  ${{env.systemd_service_name}} --no-pager
