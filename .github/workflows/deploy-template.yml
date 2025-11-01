@@ -97,10 +97,12 @@ jobs:
                 "Microsoft.AspNetCore": "Warning"
               }
             },
-            "Urls": "http://localhost:$PORT",
+            "Urls": "http://localhost:${{env.PORT}}",
             "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
             "connectionString": "${{ secrets.CONNECTION_STRING_DEV }}"
           }
+
+          ls -la ./${{ inputs.context }}
 
           EOL
 
