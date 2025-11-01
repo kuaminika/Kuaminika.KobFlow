@@ -1,0 +1,62 @@
+name: resuable-detect-template
+
+on:
+    workflow_call:
+        inputs:
+            service_project_path:
+                required: true
+                type: string
+        
+jobs:
+    detect:
+        runs-on: ubuntu-latest
+        outputs:
+          service: ${{ steps.detect_changes.outputs.service }}
+        steps:
+          - uses: actions/checkout@v3
+            with:
+                fetch-depth: 0  # Fetch all history for accurate diffing
+        
+          - name: Determine changed service folder
+            id: detect_changes
+            run: |
+                # Check for manual trigger input
+                if [ -n "${{ github.event.inputs.service }}" ]; then
+                    echo "Manual trigger detected for service: ${{ github.event.inputs.service }}"
+                    echo "SERVICE=${{ github.event.inputs.service }}" >> $GITHUB_ENV
+                    echo "service=${{ github.event.inputs.service }}" >> $GITHUB_OUTPUT
+                    exit 0
+                fi
+
+                # Get the list of changed files in the latest commit
+                git fetch --no-tags origin ${{ github.event.pull_request.base.ref || github.ref }} --depth=2
+
+                if [ "${{ github.event_name }}" = "pull_request" ]; then
+                    echo "Running on PR — comparing base and head"
+                    git diff --name-only origin/${{ github.event.pull_request.base.ref }} HEAD > changed.txt
+                else
+                    echo "Running on push — comparing last two commits"
+                    git diff --name-only HEAD~1 HEAD > changed.txt
+                fi
+
+                echo "Changed files:"
+                cat changed.txt
+                echo "-----"
+
+                # Define the service folder to look for
+                for folder in ${{ inputs.service_project_path }}; do
+                    if grep -q "^$folder/" changed.txt; then
+                    echo "Detected changes in service folder: $folder"
+                    echo "SERVICE=$folder" >> $GITHUB_ENV
+                    echo "service=$folder" >> $GITHUB_OUTPUT
+                    exit 0
+                    fi
+                done
+
+    check-ouput:
+        needs: detect
+        runs-on: ubuntu-latest
+        steps:
+          - name: Log detected service
+            run: |
+             echo "Detected service to deploy: ${{ needs.detect.outputs.service }}"
