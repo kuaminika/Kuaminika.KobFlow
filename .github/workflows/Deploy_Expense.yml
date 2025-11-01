@@ -52,7 +52,13 @@ jobs:
               exit 0
             fi
           done
-    
+  check-ouput:
+    needs: detect
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log detected service
+        run: |
+          echo "Detected service to deploy: ${{ needs.detect.outputs.service }}"
   use-deploy-template:
     needs: detect
     if: ${{ needs.detect.outputs.service != '' }}
