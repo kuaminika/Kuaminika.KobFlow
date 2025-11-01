@@ -3,6 +3,10 @@ name: 🚀 Reusable Deploy Template
 on:
   workflow_call:
     inputs:
+      restart_service:
+        required: false
+        type: boolean
+        default: true
       service_project_path:
         required: true
         type: string
@@ -77,6 +81,7 @@ jobs:
           target: ${{env.deploy_target}}
 
       - name: 🔁 Restart systemd service
+        if: ${{ inputs.restart_service }}
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
