@@ -1,13 +1,55 @@
 name: 🚀 Deploy Expense Service
 
 on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service folder to deploy (optional)'
+        required: false
+        default: 'Expense'
   push:
     branches:
       - dev/*
 
 jobs:
-      
+  detect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine changed service folder
+        id: detect_changes
+        run: |
+         # Check for manual trigger input
+          if [ -n "${{ github.event.inputs.service }}" ]; then
+            echo "Manual trigger detected for service: ${{ github.event.inputs.service }}"
+            echo "SERVICE=${{ github.event.inputs.service }}" >> $GITHUB_ENV
+            exit 0
+          fi
+          # Get the list of changed files in the latest commit
+          git fetch --no-tags origin ${{ github.event.pull_request.base.ref || github.ref }} --depth=2
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "Running on PR — comparing base and head"
+            git diff --name-only origin/${{ github.event.pull_request.base.ref }} HEAD > changed.txt
+          else
+            echo "Running on push — comparing last two commits"
+            git diff --name-only HEAD~1 HEAD > changed.txt
+          fi
+
+          cat changed.txt
+          echo "-----"
+
+          # Define the service folder to look for
+          for folder in Kuaminika.KobFlow.API.Expense; do
+            if grep -q "^$folder/" changed.txt; then
+              echo "Detected changes in service folder: $folder"
+              echo "SERVICE=$folder" >> $GITHUB_ENV
+              exit 0
+            fi
+          done
+    
   use-deploy-template:
+    needs: detect
+    if: ${{ needs.detect.outputs.service != '' }}
     uses: ./.github/workflows/deploy-template.yml 
     with:
       context: Expense
