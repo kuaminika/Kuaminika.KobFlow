@@ -34,6 +34,18 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.ref == 'refs/heads/master' && 'PROD' || 'DEV' }}
     steps:
+
+      - name: 🧾 Log workflow inputs
+        run: |
+          echo "=== INPUTS RECEIVED ==="
+          echo "Service Name: ${{ inputs.service_name }}"
+          echo "Service Project Path: ${{ inputs.service_project_path }}"
+          echo "Systemd Service Name: ${{ inputs.systemd_service_name }}"
+          echo "Deploy Target: ${{ inputs.deploy_target }}"
+          echo "Dotnet Version: ${{ inputs.dotnet_version }}"
+          echo "========================"
+
+    
       - name: 📦 Checkout code
         uses: actions/checkout@v4
 
