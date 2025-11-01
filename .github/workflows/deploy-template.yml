@@ -64,7 +64,7 @@ jobs:
         run: dotnet build ${{ inputs.service_project_path }} --configuration Release --no-restore
 
       - name: 🚀 Publish
-        run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./publish/${{ inputs.context }}
+        run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./${{ inputs.context }}
 
       - name: 📤 Upload to server (A2 Hosting)
         uses: appleboy/scp-action@v0.1.7
@@ -73,7 +73,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ./publish/${{ inputs.context }}/*
+          source: ./${{ inputs.context }}
           target: ${{env.deploy_target}}
 
       - name: 🔁 Restart systemd service
