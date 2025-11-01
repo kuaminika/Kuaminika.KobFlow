@@ -101,8 +101,10 @@ jobs:
             "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
             "connectionString": "${{ secrets.CONNECTION_STRING_DEV }}"
           }
-            
+
           EOL
+
+          cat ./${{ inputs.context }}/appsettings.Production.json
 
       - name: 📤 Upload to server (A2 Hosting)
         uses: appleboy/scp-action@v0.1.7
