@@ -6,6 +6,10 @@ on:
             service_project_path:
                 required: true
                 type: string
+        outputs:
+            service:
+                description: 'The detected service folder with changes'
+                value: ${{ jobs.detect.outputs.service }}
         
 jobs:
     detect:
