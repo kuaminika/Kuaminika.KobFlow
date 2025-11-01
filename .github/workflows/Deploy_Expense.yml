@@ -16,10 +16,11 @@ jobs:
     uses: ./.github/workflows/detect-template.yml
     with:
       service_project_path: Kuaminika.KobFlow.API.Expense
+
  
   use-deploy-template:
     needs: detect
-    if: ${{ needs.detect.outputs.service != '' }}
+    if: ${{ needs.detect.outputs.service != ''|| vars.FORCE_DEPLOY_MODE == 'true'  }}
     uses: ./.github/workflows/deploy-template.yml 
     with:
       context: Expense
