@@ -24,6 +24,13 @@ jobs:
           - name: Determine changed service folder
             id: detect_changes
             run: |
+                # check if FORCE_DEPLOY_MODE is enabled
+                if [ "${{ vars.FORCE_DEPLOY_MODE }}" = "true" ]; then
+                    echo "FORCE_DEPLOY_MODE is enabled"
+                    echo "service=${{ inputs.service_project_path}}" >> $GITHUB_OUTPUT
+                    exit 0
+                fi
+
                 # Check for manual trigger input
                 if [ -n "${{ github.event.inputs.service }}" ]; then
                     echo "Manual trigger detected for service: ${{ github.event.inputs.service }}"

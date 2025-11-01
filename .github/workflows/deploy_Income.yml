@@ -19,7 +19,7 @@ jobs:
  
   use-deploy-template:
     needs: detect
-    if: ${{ needs.detect.outputs.service != '' || vars.FORCE_DEPLOY_MODE == 'true' }}
+    if: ${{ needs.detect.outputs.service != ''  }}
     uses: ./.github/workflows/deploy-template.yml 
     with:
       context: Income
