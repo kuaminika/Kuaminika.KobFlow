@@ -1,0 +1,34 @@
+name: 🚀 Deploy KobHolder Service
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service folder to deploy (optional)'
+        required: false
+        default: 'KobHolder'
+  push:
+    branches:
+      - dev/*
+
+jobs:
+  detect:
+    uses: ./.github/workflows/detect-template.yml
+    with:
+      service_project_path: Kuaminika.KobFlow.API.KobHolder
+
+ 
+  use-deploy-template:
+    needs: detect
+    if: ${{ needs.detect.outputs.service != ''|| vars.FORCE_DEPLOY_MODE == 'true'  }}
+    uses: ./.github/workflows/deploy-template.yml 
+    with:
+      context: KobHolder
+      service_project_path: Kuaminika.KobFlow.API.KobHolder
+      restart_service: false
+    secrets:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+    
