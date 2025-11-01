@@ -73,7 +73,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ./publish/${{ inputs.service_project_path }}/*
+          source: ./publish/${{ env.service_name }}/*
           target: ${{env.deploy_target}}
 
       - name: 🔁 Restart systemd service
