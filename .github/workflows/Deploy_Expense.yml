@@ -15,7 +15,7 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     outputs:
-      service: ${{ steps.detect_changes.outputs.service }}
+      service: ${{ steps.detect.outputs.service }}
     steps:
       - uses: actions/checkout@v3
         with:
