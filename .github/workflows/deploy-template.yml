@@ -3,16 +3,10 @@ name: 🚀 Reusable Deploy Template
 on:
   workflow_call:
     inputs:
-      service_name:
-        required: true
-        type: string
       service_project_path:
         required: true
         type: string
-      systemd_service_name:
-        required: true
-        type: string
-      deploy_target:
+      context:
         required: true
         type: string
       dotnet_version:
@@ -33,15 +27,19 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.ref == 'refs/heads/master' && 'PROD' || 'DEV' }}
+    env:
+      service_name: "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}"      
+      systemd_service_name:  "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}.service"
+      deploy_target: "${{vars.OUTER_PATH}}/${{vars.APP_PATH}}"
     steps:
 
       - name: 🧾 Log workflow inputs
         run: |
           echo "=== INPUTS RECEIVED ==="
-          echo "Service Name: ${{ inputs.service_name }}"
+          echo "Service Name: $service_name"
           echo "Service Project Path: ${{ inputs.service_project_path }}"
-          echo "Systemd Service Name: ${{ inputs.systemd_service_name }}"
-          echo "Deploy Target: ${{ inputs.deploy_target }}"
+          echo "Systemd Service Name: $systemd_service_name"
+          echo "Deploy Target: $deploy_target"
           echo "Dotnet Version: ${{ inputs.dotnet_version }}"
           echo "========================"
 
@@ -75,8 +73,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ./publish/${{ inputs.service_name }}/
-          target: ${{ inputs.deploy_target }}
+          source: ./publish/$service_name/
+          target: $deploy_target
 
       - name: 🔁 Restart systemd service
         uses: appleboy/ssh-action@v0.1.10
@@ -86,7 +84,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            echo "Restarting service: ${{ inputs.systemd_service_name }}"
+            echo "Restarting service: $systemd_service_name"
             sudo systemctl daemon-reload
-            sudo systemctl restart ${{ inputs.systemd_service_name }}
-            sudo systemctl status ${{ inputs.systemd_service_name }} --no-pager
+            sudo systemctl restart $systemd_service_name
+            sudo systemctl status $systemd_service_name --no-pager
