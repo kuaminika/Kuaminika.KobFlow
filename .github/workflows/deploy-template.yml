@@ -73,23 +73,23 @@ jobs:
       - name: 🛠️ generate appsettings.production.json
         run: |
           # Pick the right port secret based on project name
-          if [ "${{ matrix.name }}" = "Expense" ]; then
+          if [ "${{ inputs.context }}" = "Expense" ]; then
             PORT=${{ vars.EXPENSE_PORT }}
-          elif [ "${{ matrix.name }}" = "Income" ]; then
+          elif [ "${{ inputs.context }}" = "Income" ]; then
             PORT=${{ vars.INCOME_PORT }}
-          elif [ "${{ matrix.name }}" = "KobHolder" ]; then
+          elif [ "${{ inputs.context }}" = "KobHolder" ]; then
             PORT=${{ vars.HOLDER_PORT }}
-          elif [ "${{ matrix.name }}" = "Merchant" ]; then
+          elif [ "${{ inputs.context }}" = "Merchant" ]; then
             PORT=${{ vars.MERCHANT_PORT }}
-          elif [ "${{ matrix.name }}" = "ExpenseCategory" ]; then
+          elif [ "${{ inputs.context }}" = "ExpenseCategory" ]; then
             PORT=${{ vars.EXPENSE_CATEGORY_PORT }}
-          elif [ "${{ matrix.name }}" = "IncomeCategory" ]; then
+          elif [ "${{ inputs.context }}" = "IncomeCategory" ]; then
             PORT=${{ vars.INCOME_CATEGORY_PORT }}
-          elif [ "${{ matrix.name }}" = "IncomeSource" ]; then
+          elif [ "${{ inputs.context }}" = "IncomeSource" ]; then
             PORT=${{ vars.INCOME_SOURCE_PORT }}
           fi
           
-          cat > ./${{ inputs.context }}/appsettings.Production.json <<EOL
+          cat > ./${{ inputs.context }}/appsettings.json <<EOL
           {
             "Logging": {
               "LogLevel": {
