@@ -69,6 +69,39 @@ jobs:
 
       - name: 🚀 Publish
         run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./${{ inputs.context }}
+      
+      - name: 🛠️ generate appsettings.production.json
+        run: |
+          # Pick the right port secret based on project name
+          if [ "${{ matrix.name }}" = "Expense" ]; then
+            PORT=${{ vars.EXPENSE_PORT }}
+          elif [ "${{ matrix.name }}" = "Income" ]; then
+            PORT=${{ vars.INCOME_PORT }}
+          elif [ "${{ matrix.name }}" = "KobHolder" ]; then
+            PORT=${{ vars.HOLDER_PORT }}
+          elif [ "${{ matrix.name }}" = "Merchant" ]; then
+            PORT=${{ vars.MERCHANT_PORT }}
+          elif [ "${{ matrix.name }}" = "ExpenseCategory" ]; then
+            PORT=${{ vars.EXPENSE_CATEGORY_PORT }}
+          elif [ "${{ matrix.name }}" = "IncomeCategory" ]; then
+            PORT=${{ vars.INCOME_CATEGORY_PORT }}
+          elif [ "${{ matrix.name }}" = "IncomeSource" ]; then
+            PORT=${{ vars.INCOME_SOURCE_PORT }}
+          fi
+          
+          cat > ./${{ inputs.context }}/appsettings.Production.json <<EOL
+          {
+            "Logging": {
+              "LogLevel": {
+                "Default": "Information",
+                "Microsoft.AspNetCore": "Warning"
+              }
+            },
+            "Urls": "http://localhost:$PORT",
+            "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
+            "connectionString": "${{ secrets.CONNECTION_STRING_DEV }}"
+          }
+          EOL
 
       - name: 📤 Upload to server (A2 Hosting)
         uses: appleboy/scp-action@v0.1.7
