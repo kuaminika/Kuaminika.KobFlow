@@ -64,7 +64,7 @@ jobs:
         run: dotnet build ${{ inputs.service_project_path }} --configuration Release --no-restore
 
       - name: 🚀 Publish
-        run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./publish/${{ inputs.service_name }}
+        run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./publish/$service_name
 
       - name: 📤 Upload to server (A2 Hosting)
         uses: appleboy/scp-action@v0.1.7
