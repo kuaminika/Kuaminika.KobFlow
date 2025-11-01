@@ -74,7 +74,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: ./publish/${{ inputs.service_project_path }}/
-          target: ${deploy_target}
+          target: ${{env.deploy_target}}
 
       - name: 🔁 Restart systemd service
         uses: appleboy/ssh-action@v0.1.10
