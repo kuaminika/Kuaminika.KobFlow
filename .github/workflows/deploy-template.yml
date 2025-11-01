@@ -102,11 +102,12 @@ jobs:
             "connectionString": "${{ secrets.CONNECTION_STRING_DEV }}"
           }
 
-          ls -la ./${{ inputs.context }}
 
           EOL
 
           cat ./${{ inputs.context }}/appsettings.Production.json
+          
+          ls -la ./${{ inputs.context }}
 
       - name: 📤 Upload to server (A2 Hosting)
         uses: appleboy/scp-action@v0.1.7
