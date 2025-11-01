@@ -15,7 +15,7 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     outputs:
-      service: ${{ steps.detect.outputs.service }}
+      service: ${{ steps.detect_changes.outputs.service }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -27,7 +27,7 @@ jobs:
           if [ -n "${{ github.event.inputs.service }}" ]; then
             echo "Manual trigger detected for service: ${{ github.event.inputs.service }}"
             echo "SERVICE=${{ github.event.inputs.service }}" >> $GITHUB_ENV
-            echo "service=$SERVICE" >> $GITHUB_OUTPUT
+            echo "service=${{ github.event.inputs.service }}" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -51,7 +51,7 @@ jobs:
             if grep -q "^$folder/" changed.txt; then
               echo "Detected changes in service folder: $folder"
               echo "SERVICE=$folder" >> $GITHUB_ENV
-              echo "service=$SERVICE" >> $GITHUB_OUTPUT
+              echo "service=$folder" >> $GITHUB_OUTPUT
               exit 0
             fi
           done
