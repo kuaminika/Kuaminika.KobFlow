@@ -30,7 +30,7 @@ jobs:
     env:
       service_name: "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}"      
       systemd_service_name:  "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}.service"
-      deploy_target: "${{vars.OUTER_PATH}}/${{vars.APP_PATH}}"
+      deploy_target: "${{vars.OUTER_PATH}}/${{vars.APP_PATH}}/${{ inputs.context }}"
     steps:
 
       - name: 🧾 Log workflow inputs
@@ -64,7 +64,7 @@ jobs:
         run: dotnet build ${{ inputs.service_project_path }} --configuration Release --no-restore
 
       - name: 🚀 Publish
-        run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./publish/$service_name
+        run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./publish/${{ inputs.service_project_path }}
 
       - name: 📤 Upload to server (A2 Hosting)
         uses: appleboy/scp-action@v0.1.7
@@ -73,7 +73,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ./publish/$service_name/
+          source: ./publish/${{ inputs.service_project_path }}/
           target: $deploy_target
 
       - name: 🔁 Restart systemd service
