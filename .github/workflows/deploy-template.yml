@@ -101,6 +101,7 @@ jobs:
             "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
             "connectionString": "${{ secrets.CONNECTION_STRING_DEV }}"
           }
+            
           EOL
 
       - name: 📤 Upload to server (A2 Hosting)
