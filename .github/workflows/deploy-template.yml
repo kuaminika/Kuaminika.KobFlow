@@ -19,7 +19,9 @@ on:
         required: false
         type: string
         default: "8.0.x"
-    secrets:
+    secrets:     
+      SSH_PORT:
+        required: true
       SSH_HOST:
         required: true
       SSH_USER:
