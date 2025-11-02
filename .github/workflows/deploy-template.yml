@@ -72,7 +72,7 @@ jobs:
       
       - name: 🛠️ generate appsettings.json
         env:
-          connectionString: ${{ vars.CONNECTION_STRING }}
+          connectionString: ${{ secrets.CONNECTION_STRING_DB }}
         run: |
           # Pick the right port secret based on project name
           if [ "${{ inputs.context }}" = "Expense" ]; then
@@ -109,7 +109,7 @@ jobs:
 
           cat ./${{ inputs.context }}/appsettings.json
           
-          ls -la ./${{ inputs.context }}
+          
 
       - name: 📤 Upload to server (A2 Hosting)
         uses: appleboy/scp-action@v0.1.7
