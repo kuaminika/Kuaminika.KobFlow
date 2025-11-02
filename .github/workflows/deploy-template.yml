@@ -46,6 +46,7 @@ jobs:
           echo "Systemd Service Name: $systemd_service_name"
           echo "Deploy Target: $deploy_target"
           echo "Dotnet Version: ${{ inputs.dotnet_version }}"
+          echo connectionString: $connectionString
           echo "========================"
 
     
@@ -100,7 +101,7 @@ jobs:
             },
             "Urls": "http://localhost:$PORT",
             "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
-            "connectionString": "${{ env.connectionString }}"
+            "connectionString": "$connectionString"
           }
 
 
