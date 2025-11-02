@@ -31,4 +31,5 @@ jobs:
       SSH_USER: ${{ secrets.SSH_USER }}
       SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
-    
+      CONNECTION_STRING_DEV: ${{ secrets.CONNECTION_STRING_DEV }}
+      CONNECTION_STRING_PROD: ${{ secrets.CONNECTION_STRING_PROD }}

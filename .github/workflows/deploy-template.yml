@@ -26,6 +26,10 @@ on:
         required: true
       SSH_KEY:
         required: true
+      CONNECTION_STRING_DEV:
+        required: true
+      CONNECTION_STRING_PROD:
+        required: true
 
 jobs:
   build-and-deploy:
@@ -72,8 +76,16 @@ jobs:
       
       - name: 🛠️ generate appsettings.json
         env:
-          connectionString: ${{ secrets.CONNECTION_STRING_DB }}
+          CONNECTION_STRING_DEV: ${{ secrets.CONNECTION_STRING_DEV }}
+          CONNECTION_STRING_PROD: ${{ secrets.CONNECTION_STRING_PROD }}
         run: |
+          # Determine which connection string to use
+          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+            connectionString="$CONNECTION_STRING_PROD"
+          else
+            connectionString="$CONNECTION_STRING_DEV"
+          fi
+          
           # Pick the right port secret based on project name
           if [ "${{ inputs.context }}" = "Expense" ]; then
             PORT=${{ vars.EXPENSE_PORT }}
