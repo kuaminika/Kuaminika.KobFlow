@@ -45,7 +45,6 @@ jobs:
           echo "Systemd Service Name: $systemd_service_name"
           echo "Deploy Target: $deploy_target"
           echo "Dotnet Version: ${{ inputs.dotnet_version }}"
-          echo connectionString: $connectionString
           echo "========================"
 
     
