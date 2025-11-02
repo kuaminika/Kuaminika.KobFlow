@@ -70,7 +70,7 @@ jobs:
       - name: 🚀 Publish
         run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./${{ inputs.context }}
       
-      - name: 🛠️ generate appsettings.production.json
+      - name: 🛠️ generate appsettings.json
         run: |
           # Pick the right port secret based on project name
           if [ "${{ inputs.context }}" = "Expense" ]; then
@@ -105,7 +105,7 @@ jobs:
 
           EOL
 
-          cat ./${{ inputs.context }}/appsettings.Production.json
+          cat ./${{ inputs.context }}/appsettings.json
           
           ls -la ./${{ inputs.context }}
 
