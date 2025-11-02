@@ -35,7 +35,6 @@ jobs:
       service_name: "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}"      
       systemd_service_name:  "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}.service"
       deploy_target: "${{vars.OUTER_PATH}}/${{vars.APP_PATH}}"
-      connectionString: ${{ secrets.CONNECTION_STRING_DB }}
     steps:
 
       - name: 🧾 Log workflow inputs
@@ -73,6 +72,8 @@ jobs:
         run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./${{ inputs.context }}
       
       - name: 🛠️ generate appsettings.json
+        env:
+          connectionString: ${{ vars.CONNECTION_STRING }}
         run: |
           # Pick the right port secret based on project name
           if [ "${{ inputs.context }}" = "Expense" ]; then
