@@ -97,7 +97,7 @@ jobs:
                 "Microsoft.AspNetCore": "Warning"
               }
             },
-            "Urls": "http://localhost:${{env.PORT}}",
+            "Urls": "http://localhost:$PORT",
             "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
             "connectionString": "${{ secrets.CONNECTION_STRING_DEV }}"
           }
