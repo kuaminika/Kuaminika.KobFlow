@@ -35,6 +35,7 @@ jobs:
       service_name: "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}"      
       systemd_service_name:  "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}.service"
       deploy_target: "${{vars.OUTER_PATH}}/${{vars.APP_PATH}}"
+      connectionString: ${{ secrets.CONNECTION_STRING_DB }}
     steps:
 
       - name: 🧾 Log workflow inputs
@@ -99,7 +100,7 @@ jobs:
             },
             "Urls": "http://localhost:$PORT",
             "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
-            "connectionString": "${{ secrets.CONNECTION_STRING_DB }}"
+            "connectionString": "${{ env.connectionString }}"
           }
 
 
