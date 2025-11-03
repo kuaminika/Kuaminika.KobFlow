@@ -3,33 +3,15 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
-#trigger:
-#- master
+trigger:
+- pipelineTry
 
 pool: 'korosol'
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-
-steps:
-
-  - task: NuGetToolInstaller@1
-
-  - task: NuGetCommand@2
-    inputs:
-        restoreSolution: '$(solution)'
-  
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'build'
-
-  - task: CmdLine@2
-    inputs:
-      script: |
-       echo Write your commands here
-      
-       echo Hello world
-       
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
