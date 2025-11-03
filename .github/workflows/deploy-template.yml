@@ -1,0 +1,148 @@
+name: 🚀 Reusable Deploy Template
+
+on:
+  workflow_call:
+    inputs:
+      restart_service:
+        required: false
+        type: boolean
+        default: true
+      service_project_path:
+        required: true
+        type: string
+      context:
+        required: true
+        type: string
+      dotnet_version:
+        required: false
+        type: string
+        default: "8.0.x"
+    secrets:     
+      SSH_PORT:
+        required: true
+      SSH_HOST:
+        required: true
+      SSH_USER:
+        required: true
+      SSH_KEY:
+        required: true
+      CONNECTION_STRING_DEV:
+        required: true
+      CONNECTION_STRING_PROD:
+        required: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/master' && 'PROD' || 'DEV' }}
+    env:
+      service_name: "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}"      
+      systemd_service_name:  "${{vars.SERVICE_PREFIX}}.${{ inputs.context }}.service"
+      deploy_target: "${{vars.OUTER_PATH}}/${{vars.APP_PATH}}"
+    steps:
+
+      - name: 🧾 Log workflow inputs
+        run: |
+          echo "=== INPUTS RECEIVED ==="
+          echo "Service Name: $service_name"
+          echo "Service Project Path: ${{ inputs.service_project_path }}"
+          echo "Systemd Service Name: $systemd_service_name"
+          echo "Deploy Target: $deploy_target"
+          echo "Dotnet Version: ${{ inputs.dotnet_version }}"
+          echo "========================"
+
+    
+      - name: 📦 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.dotnet_version }}
+
+      - name: 🗂️ Verify project path
+        run: |
+          echo "Project path: ${{ inputs.service_project_path }}"
+          ls -la ${{ inputs.service_project_path }} || exit 1
+
+      - name: 🧱 Restore dependencies
+        run: dotnet restore ${{ inputs.service_project_path }}
+
+      - name: 🏗️ Build
+        run: dotnet build ${{ inputs.service_project_path }} --configuration Release --no-restore
+
+      - name: 🚀 Publish
+        run: dotnet publish ${{ inputs.service_project_path }} --configuration Release --output ./${{ inputs.context }}
+      
+      - name: 🛠️ generate appsettings.json
+        env:
+          CONNECTION_STRING_DEV: ${{ secrets.CONNECTION_STRING_DEV }}
+          CONNECTION_STRING_PROD: ${{ secrets.CONNECTION_STRING_PROD }}
+        run: |
+          # Determine which connection string to use
+          if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+            connectionString="$CONNECTION_STRING_PROD"
+          else
+            connectionString="$CONNECTION_STRING_DEV"
+          fi
+          
+          # Pick the right port secret based on project name
+          if [ "${{ inputs.context }}" = "Expense" ]; then
+            PORT=${{ vars.EXPENSE_PORT }}
+          elif [ "${{ inputs.context }}" = "Income" ]; then
+            PORT=${{ vars.INCOME_PORT }}
+          elif [ "${{ inputs.context }}" = "KobHolder" ]; then
+            PORT=${{ vars.HOLDER_PORT }}
+          elif [ "${{ inputs.context }}" = "Merchant" ]; then
+            PORT=${{ vars.MERCHANT_PORT }}
+          elif [ "${{ inputs.context }}" = "ExpenseCategory" ]; then
+            PORT=${{ vars.EXPENSE_CATEGORY_PORT }}
+          elif [ "${{ inputs.context }}" = "IncomeCategory" ]; then
+            PORT=${{ vars.INCOME_CATEGORY_PORT }}
+          elif [ "${{ inputs.context }}" = "IncomeSource" ]; then
+            PORT=${{ vars.INCOME_SOURCE_PORT }}
+          fi
+          
+          cat > ./${{ inputs.context }}/appsettings.json <<EOL
+          {
+            "Logging": {
+              "LogLevel": {
+                "Default": "Information",
+                "Microsoft.AspNetCore": "Warning"
+              }
+            },
+            "Urls": "http://localhost:$PORT",
+            "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
+            "connectionString": "$connectionString"
+          }
+
+
+          EOL
+
+          cat ./${{ inputs.context }}/appsettings.json
+          
+          
+
+      - name: 📤 Upload to server (A2 Hosting)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ./${{ inputs.context }}
+          target: ${{env.deploy_target}}
+
+      - name: 🔁 Restart systemd service
+        if: ${{ inputs.restart_service }}
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "Restarting service: ${{env.systemd_service_name}}"
+            sudo systemctl daemon-reload
+            sudo systemctl restart  ${{env.systemd_service_name}}
+            sudo systemctl status  ${{env.systemd_service_name}} --no-pager

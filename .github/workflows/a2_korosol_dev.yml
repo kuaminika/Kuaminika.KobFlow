@@ -1,0 +1,124 @@
+name: 🚀 Deploy to A2 Hosting dev -
+
+on:
+  push:
+    branches: [dev/*]
+ 
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+  SSH_USER: ${{ secrets.SSH_USER }}
+  SSH_PORT: ${{ secrets.SSH_PORT }}
+  SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: Expense
+            path: Kuaminika.KobFlow.API.Expense
+          - name: Income
+            path: Kuaminika.KobFlow.API.Income
+          - name: KobHolder
+            path: Kuaminika.KobFlow.API.KobHolder            
+          - name: Merchant
+            path: Kuaminika.KobFlow.API.Merchant
+          - name: ExpenseCategory
+            path: Kuaminika.KobFlow.API.ExpenseCategory
+          - name: IncomeCategory
+            path: Kuaminika.KobFlow.API.IncomeCategory            
+          - name: IncomeSource
+            path: Kuaminika.KobFlow.API.IncomeSource
+
+    steps:
+    - name: 📦 Checkout code
+      uses: actions/checkout@v4
+      with:
+          fetch-depth: 0   # fetch full history so 'before' exists
+
+    - name: 🔍 Check if ${{ matrix.name }} project changed
+      id: changes
+      run: |
+        if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep "^${{ matrix.path }}/"; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: 🔍 Debug changed files
+      run: |
+        echo "Comparing commits: ${{ github.event.before }} -> ${{ github.sha }}"
+         git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+
+
+    - name: ⚙️ Setup .NET
+      if: steps.changes.outputs.changed == 'true'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: 🗂️ List project files
+      run: |
+        echo "Looking for .csproj under ${{ matrix.path }}"
+        ls -la ${{ matrix.path }} || true
+
+    - name: 📤 Publish project
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        dotnet publish ./${{ matrix.path }}/${{ matrix.path }}.csproj -c Release -o publish/${{ matrix.name }}
+        
+    - name: 📝 Create appsettings.json
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        # Pick the right port secret based on project name
+        if [ "${{ matrix.name }}" = "Expense" ]; then
+          PORT=${{ vars.EXPENSE_PORT_DEV }}
+        elif [ "${{ matrix.name }}" = "Income" ]; then
+          PORT=${{ vars.INCOME_PORT_DEV }}
+        elif [ "${{ matrix.name }}" = "KobHolder" ]; then
+          PORT=${{ vars.HOLDER_PORT_DEV }}
+        elif [ "${{ matrix.name }}" = "Merchant" ]; then
+          PORT=${{ vars.MERCHANT_PORT_DEV }}
+        elif [ "${{ matrix.name }}" = "ExpenseCategory" ]; then
+          PORT=${{ vars.EXPENSE_CATEGORY_PORT_DEV }}          
+        elif [ "${{ matrix.name }}" = "IncomeCategory" ]; then
+          PORT=${{ vars.INCOME_CATEGORY_PORT_DEV }}          
+        elif [ "${{ matrix.name }}" = "IncomeSource" ]; then
+          PORT=${{ vars.INCOME_SOURCE_PORT_DEV }}
+        fi
+        
+        cat > publish/${{ matrix.name }}/appsettings.json <<EOL
+        {
+          "Logging": {
+            "LogLevel": {
+              "Default": "Information",
+              "Microsoft.AspNetCore": "Warning"
+            }
+          },
+          "Urls": "http://localhost:$PORT",
+          "AllowedHosts": "${{ vars.ALLOWED_HOSTS }}",
+          "connectionString": "${{ secrets.CONNECTION_STRING_DEV }}"
+        }
+        EOL
+
+
+    - name: 🔑 Install SSHpass
+      if: steps.changes.outputs.changed == 'true'
+      run: sudo apt-get install -y sshpass
+
+    - name: 🚀 Deploy ${{ matrix.name }}
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        sshpass -p "${{ env.SSH_PASSWORD }}" scp -P ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no -r \
+          publish/${{ matrix.name }}/* \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }}:/home/hduque/DEV_THINGS/dotnet/kobflow/github_actions_delivery/${{ matrix.name }}/
+
+    - name: ✅ Verify deployment
+      if: steps.changes.outputs.changed == 'true'
+      run: |
+        sshpass -p "${{ env.SSH_PASSWORD }}" ssh -p ${{ env.SSH_PORT }} -o StrictHostKeyChecking=no \
+          ${{ env.SSH_USER }}@${{ env.SSH_HOST }} \
+          "ls -la /home/hduque/DEV_THINGS/dotnet/kobflow/github_actions_delivery/${{ matrix.name }} && echo '🎉 ${{ matrix.name }} deployed!'"

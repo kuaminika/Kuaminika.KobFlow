@@ -53,6 +53,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KobHolder", "KobHolder", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IncomeCategory", "IncomeCategory", "{9BD1D30F-0221-4F6C-B2C4-D21DF1E5DBCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuaminika.KobFlow.ToolBox.Test", "Kuaminika.KobFlow.ToolBox.Test\Kuaminika.KobFlow.ToolBox.Test.csproj", "{6F46789C-622F-440A-BC6A-F21E42840A20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,10 @@ Global
 		{D2C1B2FC-5603-468D-805B-56BA27984E6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2C1B2FC-5603-468D-805B-56BA27984E6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2C1B2FC-5603-468D-805B-56BA27984E6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F46789C-622F-440A-BC6A-F21E42840A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F46789C-622F-440A-BC6A-F21E42840A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F46789C-622F-440A-BC6A-F21E42840A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F46789C-622F-440A-BC6A-F21E42840A20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
