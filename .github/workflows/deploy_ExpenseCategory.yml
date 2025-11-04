@@ -26,7 +26,7 @@ jobs:
     with:
       context: ExpenseCategory
       service_project_path: Kuaminika.KobFlow.API.ExpenseCategory
-      restart_service: false
+      restart_service:  ${{ vars.FORCE_DEPLOY_MODE == 'true' }}
     secrets:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_USER: ${{ secrets.SSH_USER }}
