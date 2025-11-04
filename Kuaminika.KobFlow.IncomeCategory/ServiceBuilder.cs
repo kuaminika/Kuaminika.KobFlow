@@ -16,8 +16,19 @@ namespace Kuaminika.KobFlow.IncomeCategory
         {
             string conenctionString = config.GetStringValue("connectionString");
             kJSONParser = new KNewtonJSonParser();
-            this.LogTool = new ConsoleLogTool(kJSONParser);
+            var consoleLog = new ConsoleLogTool(kJSONParser);
+            var dbGatewayLog = new DataGateway(conenctionString, consoleLog);
+
+            this.LogTool = LogToolFactory.New.CreateDbWriter(new LogToolFactoryToolbox
+            {
+                ObjParser = new KNewtonJSonParser(),
+                DbGateway = dbGatewayLog,
+                BackupLogTool = consoleLog,
+
+            });
             this.LogTool.TraceModeOn = true;
+            this.LogTool.ServiceName = "IncomeCategoryService";
+            this.LogTool.Application = "Kuaminika.KobFlow";
             this.LogTool.LogWithTime = true;
             this.dbGateway = new DataGateway(conenctionString, this.LogTool);
             this.merchantRepo = new IncomeCategoryRepo(new IncomeCategoryRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });

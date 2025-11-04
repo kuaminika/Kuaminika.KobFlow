@@ -5,6 +5,9 @@
         bool LogIsOff { get; set; }
         bool TraceModeOn { get; set; }
         bool LogWithTime { get; set; }
+        string ServiceName { get; set; }
+        string Action { get; set; }
+        string Application { get; set; }
 
         void LogError(string message, [System.Runtime.CompilerServices.CallerMemberName] string location = "");
         void Log(string msg, [System.Runtime.CompilerServices.CallerMemberName] string location = "");

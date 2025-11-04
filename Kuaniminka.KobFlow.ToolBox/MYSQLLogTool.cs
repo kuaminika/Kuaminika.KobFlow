@@ -43,13 +43,16 @@ namespace Kuaniminka.KobFlow.ToolBox
                 {
                     backupLogTool.Log("trying to log to db"+ Task.CurrentId);
                     KWriteResult re =   dbGateway.ExecuteInsert($@"
-                        INSERT INTO db_log (log_level, location, message, log_time)
-                        VALUES (@level, @location, @message,@log_time)", new Dictionary<string, object>
+                        INSERT INTO db_log (log_level, location, message, log_time,action,service,application)
+                        VALUES (@level, @location, @message,@log_time,@action,@service,@application)", new Dictionary<string, object>
                             {
                             {"@level",logLevel},
                             {"@location",location},
                             {"@message",message},
-                              {"@log_time",DateTime.Now   }
+                            {"@log_time",DateTime.Now   },
+                            {"@action",this.Action },
+                            {"@service",this.ServiceName },
+                            {"@application",this.Application }
                         });
 
                     backupLogTool.logObject(Task.CurrentId+ "--> done running test");

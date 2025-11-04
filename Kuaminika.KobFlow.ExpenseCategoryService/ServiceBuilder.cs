@@ -16,9 +16,19 @@ namespace Kuaminika.KobFlow.ExpenseCategoryService
         {
             string conenctionString = config.GetStringValue("connectionString");
             kJSONParser = new KNewtonJSonParser();
-            this.LogTool = new ConsoleLogTool(kJSONParser);
+            var consoleLog = new ConsoleLogTool(kJSONParser);
+            var dbGatewayLog = new DataGateway(conenctionString, consoleLog);
+           this.LogTool = LogToolFactory.New.CreateDbWriter(new LogToolFactoryToolbox
+           {
+               ObjParser = new KNewtonJSonParser(),
+               DbGateway = dbGatewayLog,
+               BackupLogTool = consoleLog,
+
+           });
             this.LogTool.TraceModeOn = true;
             this.LogTool.LogWithTime = true;
+            this.LogTool.ServiceName = "ExpenseCategoryService";
+            this.LogTool.Application = "Kuaminika.KobFlow";
             this.dbGateway = new DataGateway(conenctionString,this.LogTool);
             this.merchantRepo = new ExpenseCategoryRepo(new ExpenseCategoryRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
 

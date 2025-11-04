@@ -22,6 +22,7 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
         [Route("/")]
         public KRequestReceipt<List<MerchantModel>> Get()
         {
+            this.logTool.Action = "GetAllMerchants";
             List<MerchantModel> merchants = new List<MerchantModel>();
             try
             {
@@ -40,9 +41,11 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
         [Route("GetAssigned")]
         public KRequestReceipt<List<MerchantModel_Assigned>> AllAssignedRecords()
         {
+            
             List<MerchantModel_Assigned> merchants = new List<MerchantModel_Assigned>();
             try
             {
+                this.logTool.Action = "GetAllAssignedMerchants";
                 merchants = merchantService.GetAllAssignedRecords();
                 return new KRequestReceipt<List<MerchantModel_Assigned>>(merchants);
             }
@@ -68,6 +71,7 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
         {
             try
             {
+                this.logTool.Action = "AddMerchant";
                 MerchantModel recorded = merchantService.AddMerchant(addMe);
 
                 KRequestReceipt<MerchantModel> receipt = new KRequestReceipt<MerchantModel>(recorded);
@@ -90,6 +94,7 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
         {
             try
             {
+                this.logTool.Action = "DeleteMerchant";
                 MerchantModel recorded = merchantService.DeleteMerchant(victim);
 
                 KRequestReceipt<MerchantModel> receipt = new KRequestReceipt<MerchantModel>(recorded);
@@ -112,6 +117,7 @@ namespace Kuaminika.KobFlow.API.Merchant.Controllers
         {
             try
             {
+                this.logTool.Action = "UpdateMerchant";
                 MerchantModel updatded = merchantService.UpdateMerchant(victim);
 
                 KRequestReceipt<MerchantModel> receipt = new KRequestReceipt<MerchantModel>(updatded);

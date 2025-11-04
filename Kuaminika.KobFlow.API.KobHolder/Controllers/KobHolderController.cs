@@ -21,6 +21,7 @@ namespace Kuaminika.KobFlow.API.KobHolder.Controllers
         [HttpGet(Name = "GetKobHolder")]
         public KRequestReceipt<List<KobHolderModel>> Get()
         {
+            logTool.Action = "GetAllKobHolders";
             List<KobHolderModel> merchants = new List<KobHolderModel>();
             try
             {
@@ -47,6 +48,7 @@ namespace Kuaminika.KobFlow.API.KobHolder.Controllers
         [Route("Add")]
         public KRequestReceipt<KobHolderModel> Add(KobHolderModel addMe)
         {
+            logTool.Action = "AddKobHolder";
             try
             {
                 KobHolderModel recorded = service.Add(addMe);
@@ -69,6 +71,7 @@ namespace Kuaminika.KobFlow.API.KobHolder.Controllers
         [Route("Delete")]
         public KRequestReceipt<KobHolderModel> Delete(KobHolderModel victim)
         {
+            logTool.Action = "DeleteKobHolder";
             try
             {
                 KobHolderModel recorded = service.Delete(victim);
@@ -90,6 +93,7 @@ namespace Kuaminika.KobFlow.API.KobHolder.Controllers
         [Route("Update")]
         public KRequestReceipt<KobHolderModel> Update(KobHolderModel victim)
         {
+            logTool.Action = "UpdateKobHolder";
             try
             {
                 KobHolderModel updatded = service.Update(victim);

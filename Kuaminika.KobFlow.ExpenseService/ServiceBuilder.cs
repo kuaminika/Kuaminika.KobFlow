@@ -23,9 +23,11 @@ namespace Kuaminika.KobFlow.ExpenseService
             {
                 ObjParser = new KNewtonJSonParser(),
                 DbGateway = dbGatewayLog ,
-                BackupLogTool = consoleLog
-            });
+                BackupLogTool = consoleLog,
 
+            });
+            logTool.ServiceName = "ExpenseService";
+            logTool.Application = "Kuaminika.KobFlow";
             this.LogTool = logTool;
             this.LogTool.TraceModeOn = true;
             this.LogTool.LogWithTime = true;

@@ -21,6 +21,7 @@ namespace Kuaminika.KobFlow.API.ExpenseCategory.Controllers
         [HttpGet(Name = "Get")]
         public KRequestReceipt<List<ExpenseCategoryModel>> Get()
         {
+            logTool.Action = "GetAllExpenseCategories";
             List<ExpenseCategoryModel> merchants = new List<ExpenseCategoryModel>();
             try
             {
@@ -49,6 +50,7 @@ namespace Kuaminika.KobFlow.API.ExpenseCategory.Controllers
         {
             try
             {
+                logTool.Action = "AddExpenseCategory";
                 ExpenseCategoryModel recorded = service.Add(addMe);
 
                 KRequestReceipt<ExpenseCategoryModel> receipt = new KRequestReceipt<ExpenseCategoryModel>(recorded);
@@ -71,6 +73,7 @@ namespace Kuaminika.KobFlow.API.ExpenseCategory.Controllers
         {
             try
             {
+                logTool.Action = "DeleteExpenseCategory";
                 ExpenseCategoryModel recorded = service.Delete(victim);
 
                 KRequestReceipt<ExpenseCategoryModel> receipt = new KRequestReceipt<ExpenseCategoryModel>(recorded);
@@ -92,6 +95,7 @@ namespace Kuaminika.KobFlow.API.ExpenseCategory.Controllers
         {
             try
             {
+                logTool.Action = "UpdateExpenseCategory";
                 ExpenseCategoryModel updatded = service.Update(victim);
 
                 KRequestReceipt<ExpenseCategoryModel> receipt = new KRequestReceipt<ExpenseCategoryModel>(updatded);

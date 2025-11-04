@@ -16,6 +16,9 @@ namespace Kuaniminka.KobFlow.ToolBox
         private string time { get { return LogWithTime ? DateTime.Now.ToString() + "-->" : string.Empty; } }
 
         public bool TraceModeOn { get; set; }
+        public string ServiceName { get; set; }
+        public string Action { get; set; }
+        public string Application { get; set; }
 
         protected virtual string formatLocation(string location)
         {

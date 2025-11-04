@@ -21,6 +21,7 @@ namespace Kuaminika.KobFlow.API.IncomeCategory.Controllers
         [HttpGet(Name = "Get")]
         public KRequestReceipt<List<IncomeCategoryModel>> Get()
         {
+            this.logTool.Action = "GetAllIncomeCategories";
             List<IncomeCategoryModel> merchants = new List<IncomeCategoryModel>();
             try
             {
@@ -47,6 +48,7 @@ namespace Kuaminika.KobFlow.API.IncomeCategory.Controllers
         [Route("Add")]
         public KRequestReceipt<IncomeCategoryModel> Add(IncomeCategoryModel addMe)
         {
+            this.logTool.Action = "AddIncomeCategory";
             try
             {
                 IncomeCategoryModel recorded = incomeCategoryService.Add(addMe);
@@ -69,6 +71,7 @@ namespace Kuaminika.KobFlow.API.IncomeCategory.Controllers
         [Route("Delete")]
         public KRequestReceipt<IncomeCategoryModel> Delete(IncomeCategoryModel victim)
         {
+            this.logTool.Action = "DeleteIncomeCategory";
             try
             {
                 IncomeCategoryModel recorded = incomeCategoryService.Delete(victim);
@@ -90,6 +93,7 @@ namespace Kuaminika.KobFlow.API.IncomeCategory.Controllers
         [Route("Update")]
         public KRequestReceipt<IncomeCategoryModel> Update(IncomeCategoryModel victim)
         {
+            this.logTool.Action = "UpdateIncomeCategory";
             try
             {
                 IncomeCategoryModel updatded = incomeCategoryService.Update(victim);
