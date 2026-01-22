@@ -82,8 +82,9 @@ namespace Kuaniminka.KobFlow.ToolBox
         public KWriteResult ExecuteInsert(string query)
         {
 
-                KWriteResult result = new KWriteResult();
-                MySqlConnection conn = new MySqlConnection(this.connStr);
+            KWriteResult result = new KWriteResult();
+            using (MySqlConnection conn = new MySqlConnection(this.connStr))
+            {
                 conn.Open();
 
 
@@ -91,10 +92,11 @@ namespace Kuaniminka.KobFlow.ToolBox
                 result.AffectedRowCount = cmd.ExecuteNonQuery();
                 result.LastInsertedId = cmd.LastInsertedId;
 
-                conn.Close();
+            
 
 
                 return result;
+            }
            
         }
 
