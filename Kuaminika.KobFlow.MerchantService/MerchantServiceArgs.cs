@@ -7,5 +7,7 @@ namespace Kuaminika.KobFlow.MerchantService
         public IMerchantRepository Repo {get;set;}
 
         public IKLogTool LogTool { get; internal set; }
+        public KIdentityMap<MerchantModel>? IdentityMap { get; internal set; }
+        public ICacheHolder<MerchantModel>? CacheTool { get; internal set; }
     }
 }

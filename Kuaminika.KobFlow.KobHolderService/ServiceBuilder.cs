@@ -84,7 +84,7 @@ namespace Kuaminika.KobFlow.KobHolderService
         public IKobHolderService Build()
         {
             this.merchantRepo = new KobHolderRepo(new KobHolderRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
-            KobHolderServiceArgs args = new KobHolderServiceArgs { LogTool = this.LogTool, Repo = this.merchantRepo };
+            KobHolderServiceArgs args = new KobHolderServiceArgs { LogTool = this.LogTool, Repo = this.merchantRepo, CacheTool= new CacheHolder<KobHolderModel>(CacheRoot.MemoryCache,60) , IdentityMap = new KIdentityMap<KobHolderModel>()};
 
             IKobHolderService result = new KobHolderService(args);
 

@@ -84,7 +84,8 @@ namespace Kuaminika.KobFlow.MerchantService
         {
             this.merchantRepo = new MerchantRepo(new MerchantRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
             MerchantServiceArgs args = new MerchantServiceArgs { LogTool = this.LogTool , Repo = this.merchantRepo};
-
+            args.CacheTool = new CacheHolder<MerchantModel>(CacheRoot.MemoryCache, 60);
+            args.IdentityMap = new KIdentityMap<MerchantModel>();
             IMerchhantService result = new MerchantService(args);
 
             return result;

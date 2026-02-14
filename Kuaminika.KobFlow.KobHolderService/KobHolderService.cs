@@ -9,11 +9,15 @@ namespace Kuaminika.KobFlow.KobHolderService
     {
         private IKobHolderRepository repo;
         private IKLogTool logTool;
+        private IKIdentityMap<KobHolderModel> iKIdentityMap;
+        private ICacheHolder<KobHolderModel> cacheTool;
 
         public KobHolderService(KobHolderServiceArgs args)
         {
             this.repo = args.Repo;
             this.logTool = args.LogTool;
+            this.iKIdentityMap = args.IdentityMap;
+            this.cacheTool = args.CacheTool;
 
         }
         public KobHolderModel Add(KobHolderModel addMe)

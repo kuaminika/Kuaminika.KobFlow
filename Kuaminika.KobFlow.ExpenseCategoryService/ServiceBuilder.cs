@@ -4,7 +4,7 @@ namespace Kuaminika.KobFlow.ExpenseCategoryService
 {
     public class ServiceBuilder
     {
-        private IExpenseCategoryRepository merchantRepo;
+        private IExpenseCategoryRepository repository;
         private IDataGateway dbGateway;
 
         public static ServiceBuilder Create(IKonfig config)
@@ -30,7 +30,7 @@ namespace Kuaminika.KobFlow.ExpenseCategoryService
             this.LogTool.ServiceName = "ExpenseCategoryService";
             this.LogTool.Application = "Kuaminika.KobFlow";
             this.dbGateway = new DataGateway(conenctionString,this.LogTool);
-            this.merchantRepo = new ExpenseCategoryRepo(new ExpenseCategoryRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
+            this.repository = new ExpenseCategoryRepo(new ExpenseCategoryRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
 
         }
         public IKLogTool LogTool { get; private set; }
@@ -74,7 +74,7 @@ namespace Kuaminika.KobFlow.ExpenseCategoryService
         {
             if (repo != null)
             {
-                this.merchantRepo = repo;
+                this.repository = repo;
                 return this;
             }
             return this;
@@ -83,9 +83,10 @@ namespace Kuaminika.KobFlow.ExpenseCategoryService
 
         public IExpenseCategoryService Build()
         {
-            this.merchantRepo = new ExpenseCategoryRepo(new ExpenseCategoryRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
-            ExpenseCategoryServiceArgs args = new ExpenseCategoryServiceArgs { LogTool = this.LogTool, Repo = this.merchantRepo };
-
+            this.repository = new ExpenseCategoryRepo(new ExpenseCategoryRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
+            ExpenseCategoryServiceArgs args = new ExpenseCategoryServiceArgs { LogTool = this.LogTool, Repo = this.repository };
+            args.CacheTool = new CacheHolder<ExpenseCategoryModel>(CacheRoot.MemoryCache, 60);
+            args.IdentityMap = new KIdentityMap<ExpenseCategoryModel>();
             IExpenseCategoryService result = new ExpenseCategoryService(args);
 
             return result;
