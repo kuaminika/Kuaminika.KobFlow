@@ -71,6 +71,12 @@ namespace Kuaminika.KobFlow.IncomeService
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
             List<IncomeModel> result = repo.GetAll();
+
+
+            iKIdentityMap.PopulateMap(result);
+            cacheTool.PopulateCache(cacheKey, result);
+
+
             logTool.LogTrace("ending", methodName);
 
             return result;

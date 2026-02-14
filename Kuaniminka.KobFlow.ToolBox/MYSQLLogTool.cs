@@ -26,12 +26,7 @@ namespace Kuaniminka.KobFlow.ToolBox
             this.backupLogTool = backupLogTool;
 
         }
-
-        protected override string formatLocation(string location)
-        {
-            return $"";
-        }
-
+              
         private async  Task writeLogToDbAsync(string message, string location = "",KLogLevel logLevel =KLogLevel.Info)
         {
             backupLogTool.Log($"will save this log to DB:{message}");

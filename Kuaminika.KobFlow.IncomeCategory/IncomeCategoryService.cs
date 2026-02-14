@@ -59,10 +59,14 @@ namespace Kuaminika.KobFlow.IncomeCategory
                 iKIdentityMap.PopulateMap(fromCache);
                 return fromCache;
             }
+            logTool.LogTrace("cache miss for GetAll" );
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? "" : method.Name;
-            logTool.LogTrace("starting", methodName);
+            logTool.LogTrace("starting ", methodName);
             List<IncomeCategoryModel> result = repo.GetAll();
+
+            cacheTool.PopulateCache(cacheKey, result);
+            iKIdentityMap.PopulateMap(result);
             logTool.LogTrace("ending", methodName);
 
             return result;

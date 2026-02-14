@@ -51,6 +51,9 @@ namespace Kuaminika.KobFlow.IncomeSourceService
 
         public List<IncomeSourceModel> GetAll()
         {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? "" : method.Name;
+            logTool.LogTrace("starting", methodName);
 
             string cacheKey = $"{GetType().FullName}-GetAll";
 
@@ -60,11 +63,12 @@ namespace Kuaminika.KobFlow.IncomeSourceService
                 iKIdentityMap.PopulateMap(fromCache);
                 return fromCache;
             }
-
-            var method = System.Reflection.MethodBase.GetCurrentMethod();
-            string methodName = method == null ? "" : method.Name;
-            logTool.LogTrace("starting", methodName);
+            logTool.LogTrace($"cache miss for {cacheKey}", cacheKey);
             List<IncomeSourceModel> result = repo.GetAll();
+
+
+            cacheTool.PopulateCache(cacheKey, result);
+            iKIdentityMap.PopulateMap(result);
             logTool.LogTrace("ending", methodName);
 
             return result;

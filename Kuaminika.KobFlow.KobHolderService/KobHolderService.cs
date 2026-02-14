@@ -56,7 +56,22 @@ namespace Kuaminika.KobFlow.KobHolderService
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
+
+
+            string cacheKey = $"{GetType().FullName}-GetAll";
+
+            if (cacheTool.HasList(cacheKey))
+            {
+                var fromCache = cacheTool.GetListFromCache(cacheKey);
+                iKIdentityMap.PopulateMap(fromCache);
+                return fromCache;
+            }
+            logTool.LogTrace($"cache miss for {cacheKey}", cacheKey);
             List<KobHolderModel> result = repo.GetAll();
+
+            iKIdentityMap.PopulateMap(result);
+            cacheTool.PopulateCache(cacheKey, result);
+
             logTool.LogTrace("ending", methodName);
 
             return result;

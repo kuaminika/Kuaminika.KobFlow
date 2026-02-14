@@ -69,7 +69,7 @@ namespace Kuaminika.KobFlow.ExpenseService
             List<ExpenseModel> result = repo.GetAll();
             logTool.LogTrace("ending", methodName);
             iKIdentityMap.PopulateMap(result);
-            cacheTool.PopulateCache($"{GetType().FullName}-{methodName}", result);
+            cacheTool.PopulateCache(cacheKey, result);
 
 
             return result;
