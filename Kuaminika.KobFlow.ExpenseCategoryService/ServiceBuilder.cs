@@ -85,7 +85,7 @@ namespace Kuaminika.KobFlow.ExpenseCategoryService
         {
             this.repository = new ExpenseCategoryRepo(new ExpenseCategoryRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
             ExpenseCategoryServiceArgs args = new ExpenseCategoryServiceArgs { LogTool = this.LogTool, Repo = this.repository };
-            args.CacheTool = new CacheHolder<ExpenseCategoryModel>(CacheRoot.MemoryCache, 60);
+            args.CacheTool = new CacheHolder<ExpenseCategoryModel>(CacheRoot.MemoryCache, KConstants.CacheExpirationInSeconds);
             args.IdentityMap = new KIdentityMap<ExpenseCategoryModel>();
             IExpenseCategoryService result = new ExpenseCategoryService(args);
 

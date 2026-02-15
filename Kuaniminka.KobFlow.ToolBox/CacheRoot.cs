@@ -8,4 +8,9 @@ namespace Kuaniminka.KobFlow.ToolBox
             new MemoryCache(new MemoryCacheOptions());
     }
 
+    public static class KConstants
+    {
+        public static int CacheExpirationInSeconds = 3600;
+    }
+
 }

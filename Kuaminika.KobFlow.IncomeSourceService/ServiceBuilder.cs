@@ -86,7 +86,7 @@ namespace Kuaminika.KobFlow.IncomeSourceService
         {
             this.merchantRepo = new IncomeSourceRepo(new IncomeSourceRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
             IncomeSourceServiceArgs args = new IncomeSourceServiceArgs { LogTool = this.LogTool, Repo = this.merchantRepo };
-            args.CacheTool = new CacheHolder<IncomeSourceModel>(CacheRoot.MemoryCache, 60);
+            args.CacheTool = new CacheHolder<IncomeSourceModel>(CacheRoot.MemoryCache, KConstants.CacheExpirationInSeconds);
             args.IdentityMap = new KIdentityMap<IncomeSourceModel>();
             IIncomeSourceService result = new IncomeSourceService(args);
 

@@ -86,7 +86,7 @@ namespace Kuaminika.KobFlow.IncomeCategory
         {
             this.merchantRepo = new IncomeCategoryRepo(new IncomeCategoryRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
             IncomeCategoryServiceArgs args = new IncomeCategoryServiceArgs { LogTool = this.LogTool, Repo = this.merchantRepo };
-            args.CacheTool = new CacheHolder<IncomeCategoryModel>(CacheRoot.MemoryCache, 60);
+            args.CacheTool = new CacheHolder<IncomeCategoryModel>(CacheRoot.MemoryCache, KConstants.CacheExpirationInSeconds);
             args.IdentityMap = new KIdentityMap<IncomeCategoryModel>();
             IIncomeCategoryService result = new IncomeCategoryService(args);
 

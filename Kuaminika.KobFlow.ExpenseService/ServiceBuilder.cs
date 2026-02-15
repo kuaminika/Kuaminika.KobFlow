@@ -92,7 +92,7 @@ namespace Kuaminika.KobFlow.ExpenseService
         {
             this.merchantRepo = new ExpenseRepo(new ExpenseRepoArgs() { DataGateway = dbGateway, JSONParser = kJSONParser, LogTool = this.LogTool });
             ExpenseServiceArgs args = new ExpenseServiceArgs { LogTool = this.LogTool, Repo = this.merchantRepo };
-            args.CacheTool = new CacheHolder<ExpenseModel>(CacheRoot.MemoryCache, 60);
+            args.CacheTool = new CacheHolder<ExpenseModel>(CacheRoot.MemoryCache, KConstants.CacheExpirationInSeconds);
             args.IdentityMap = new KIdentityMap<ExpenseModel>();
             IExpenseService result = new ExpenseService(args);
 
