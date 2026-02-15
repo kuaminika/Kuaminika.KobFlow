@@ -81,6 +81,10 @@ namespace Kuaminika.KobFlow.ExpenseService
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
+            logTool.LogTrace($"victim id: {victim.Id}", methodName);
+            logTool.logObject(victim, methodName);
+
+
             ExpenseModel result = repo.Update(victim);
             iKIdentityMap.UpdateInMap(result.Id, result);
             cacheTool.Update($"{GetType().FullName}-{result.Id.ToString()}", result);
