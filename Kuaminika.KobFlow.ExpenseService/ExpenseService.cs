@@ -2,6 +2,7 @@
 using Kuaniminka.KobFlow.ToolBox;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Kuaminika.KobFlow.ExpenseService
 {
@@ -9,11 +10,14 @@ namespace Kuaminika.KobFlow.ExpenseService
     {
         private IExpenseRepository repo;
         private IKLogTool logTool;
-
+        private IKIdentityMap<ExpenseModel> iKIdentityMap;
+        private ICacheHolder<ExpenseModel> cacheTool;
         public ExpenseService(ExpenseServiceArgs args)
         {
             this.repo = args.Repo;
             this.logTool = args.LogTool;
+            this.iKIdentityMap = args.IdentityMap;
+            this.cacheTool = args.CacheTool;
 
         }
         public ExpenseModel Add(ExpenseModel addMe)
@@ -22,6 +26,9 @@ namespace Kuaminika.KobFlow.ExpenseService
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
             ExpenseModel result = repo.Add(addMe);
+            iKIdentityMap.AddToMap(result.Id, result);
+            cacheTool.Add($"{GetType().FullName}-{result.Id.ToString()}", result);
+            wipeOutCacheGetAll();
             logTool.LogTrace("ending", methodName);
 
             return result;
@@ -34,6 +41,9 @@ namespace Kuaminika.KobFlow.ExpenseService
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
             ExpenseModel result = repo.Delete(victim);
+            iKIdentityMap.RemoveFromMap(victim.Id);
+            cacheTool.Remove($"{GetType().FullName}-{result.Id.ToString()}");
+            wipeOutCacheGetAll();
             logTool.LogTrace("ending", methodName);
 
             return result;
@@ -41,11 +51,26 @@ namespace Kuaminika.KobFlow.ExpenseService
 
         public List<ExpenseModel> GetAll()
         {
+
+            string cacheKey = $"{GetType().FullName}-GetAll";
+
+            if (cacheTool.HasList(cacheKey))
+            {
+                var fromCache = cacheTool.GetListFromCache(cacheKey);
+                iKIdentityMap.PopulateMap(fromCache);
+                return fromCache;
+            }
+
+
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? "" : method.Name;
+
             logTool.LogTrace("starting", methodName);
             List<ExpenseModel> result = repo.GetAll();
             logTool.LogTrace("ending", methodName);
+            iKIdentityMap.PopulateMap(result);
+            cacheTool.PopulateCache(cacheKey, result);
+
 
             return result;
 
@@ -56,10 +81,25 @@ namespace Kuaminika.KobFlow.ExpenseService
             var method = System.Reflection.MethodBase.GetCurrentMethod();
             string methodName = method == null ? "" : method.Name;
             logTool.LogTrace("starting", methodName);
+            logTool.LogTrace($"victim id: {victim.Id}", methodName);
+            logTool.logObject(victim, methodName);
+
+
             ExpenseModel result = repo.Update(victim);
+            iKIdentityMap.UpdateInMap(result.Id, result);
+            cacheTool.Update($"{GetType().FullName}-{result.Id.ToString()}", result);
+            wipeOutCacheGetAll();
+
             logTool.LogTrace("ending", methodName);
 
             return result;
+        }
+
+
+        private void wipeOutCacheGetAll()
+        {
+            string key = $"{GetType().FullName}-GetAll";
+            cacheTool.Remove(key);
         }
     }
 }

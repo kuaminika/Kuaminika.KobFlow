@@ -7,5 +7,7 @@ namespace Kuaminika.KobFlow.KobHolderService
         public IKobHolderRepository Repo { get; set; }
 
         public IKLogTool LogTool { get; internal set; }
+        public IKIdentityMap<KobHolderModel>? IdentityMap { get;  set; }
+        public ICacheHolder<KobHolderModel>? CacheTool { get;  set; }
     }
 }

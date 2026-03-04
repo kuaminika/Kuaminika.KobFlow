@@ -7,5 +7,7 @@ namespace Kuaminika.KobFlow.ExpenseCategoryService
         public IExpenseCategoryRepository Repo { get; set; }
 
         public IKLogTool LogTool { get; internal set; }
+        public ICacheHolder<ExpenseCategoryModel>? CacheTool { get; internal set; }
+        public IKIdentityMap<ExpenseCategoryModel>? IdentityMap { get; internal set; }
     }
 }

@@ -7,5 +7,7 @@ namespace Kuaminika.KobFlow.IncomeService
         public IIncomeRepository Repo { get; set; }
 
         public IKLogTool LogTool { get; internal set; }
+        public IKIdentityMap<IncomeModel>? IdentityMap { get; internal set; }
+        public ICacheHolder<IncomeModel>? CacheTool { get; internal set; }
     }
 }

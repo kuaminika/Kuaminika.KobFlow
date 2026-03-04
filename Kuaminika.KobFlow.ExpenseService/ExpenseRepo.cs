@@ -124,7 +124,7 @@ namespace Kuaminika.KobFlow.ExpenseService
                                                  description = '{victim.Description}',
                                                  category_id = '{victim.CategoryId}',
                                                  amount= {victim.Amount},
-                                                 date = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}',
+                                                 date = '{victim.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")}',
                                                  account_id = {victim.KobHolderId},
                                                  user_id = {victim.OwnerId} 
                                            where id = {victim.Id};";
