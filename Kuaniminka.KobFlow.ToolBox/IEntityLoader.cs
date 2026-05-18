@@ -3,7 +3,9 @@
     public interface ICacheHolder<T>
     {
         void Add(string key, T result);
+        T Get(string cacheKey);
         List<T> GetListFromCache(string cacheKey);
+        bool Has(string cacheKey);
         bool HasList(string cacheKey);
         void PopulateCache(string methodName, List<T> result);
         void Remove(string v);

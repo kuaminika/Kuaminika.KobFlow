@@ -6,6 +6,8 @@
         ExpenseModel Delete(ExpenseModel victim);
         ExpenseModel Update(ExpenseModel victim);
         List<ExpenseModel> GetAll();
+        List<ExpenseModel> BulkAdd(List<ExpenseModel> expenses);
+        ExpenseModel FindById(long id);
     }
 
 

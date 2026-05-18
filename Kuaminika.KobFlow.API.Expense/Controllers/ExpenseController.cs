@@ -44,8 +44,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
             return result;
         }
 
-        [HttpPost(Name = "Add")]
-        [Route("Add")]
+        [HttpPost( "Add")]
         public KRequestReceipt<ExpenseModel> Add(ExpenseModel addMe)
         {
             try
@@ -67,8 +66,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
         }
 
 
-        [HttpPost(Name = "Delete")]
-        [Route("Delete")]
+        [HttpPost( "Delete")]
         public KRequestReceipt<ExpenseModel> Delete(ExpenseModel victim)
         {
             try
@@ -89,8 +87,8 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
             }
         }
 
-        [HttpPost(Name = "Update")]
-        [Route("Update")]
+        [HttpPost("Update")]
+ 
         public KRequestReceipt<ExpenseModel> Update(ExpenseModel victim)
         {
             try
@@ -107,6 +105,44 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
                 logTool.LogError($"{ex.Message}\n{ex.StackTrace}", method == null ? "" : method.Name);
 
                 var result = new KRequestReceipt<ExpenseModel>(victim);
+                return handleError(result, ex);
+            }
+        }
+
+        [HttpGet("FindById/{id}")] 
+        public KRequestReceipt<ExpenseModel> FindById(long id)
+        {
+            ExpenseModel expense = new ExpenseModel();
+            try
+            {
+                logTool.Action = "FindExpenseById";
+                expense = service.FindById(id);
+                return new KRequestReceipt<ExpenseModel>(expense);
+            }
+            catch (Exception ex)
+            {
+                var method = System.Reflection.MethodBase.GetCurrentMethod();
+                logTool.LogError($"{ex.Message}\n{ex.StackTrace}", method == null ? "" : method.Name);
+                var result = new KRequestReceipt<ExpenseModel>(expense);
+                return handleError(result, ex);
+            }
+        }
+
+        [HttpPost( "BulkAdd")]
+        public KRequestReceipt<List<ExpenseModel>> BulkAdd(List<ExpenseModel> expenses)
+        {
+            List<ExpenseModel> recorded = new List<ExpenseModel>();
+            try
+            {
+                logTool.Action = "BulkAddExpenses";
+                recorded = service.BulkAdd(expenses);
+                return new KRequestReceipt<List<ExpenseModel>>(recorded);
+            }
+            catch (Exception ex)
+            {
+                var method = System.Reflection.MethodBase.GetCurrentMethod();
+                logTool.LogError($"{ex.Message}\n{ex.StackTrace}", method == null ? "" : method.Name);
+                var result = new KRequestReceipt<List<ExpenseModel>>(recorded);
                 return handleError(result, ex);
             }
         }
