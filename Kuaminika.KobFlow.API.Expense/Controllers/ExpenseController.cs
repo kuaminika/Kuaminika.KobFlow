@@ -44,8 +44,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
             return result;
         }
 
-        [HttpPost(Name = "Add")]
-        [Route("Add")]
+        [HttpPost( "Add")]
         public KRequestReceipt<ExpenseModel> Add(ExpenseModel addMe)
         {
             try
@@ -67,8 +66,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
         }
 
 
-        [HttpPost(Name = "Delete")]
-        [Route("Delete")]
+        [HttpPost( "Delete")]
         public KRequestReceipt<ExpenseModel> Delete(ExpenseModel victim)
         {
             try
@@ -89,8 +87,8 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
             }
         }
 
-        [HttpPost(Name = "Update")]
-        [Route("Update")]
+        [HttpPost("Update")]
+ 
         public KRequestReceipt<ExpenseModel> Update(ExpenseModel victim)
         {
             try
@@ -111,8 +109,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
             }
         }
 
-        [HttpGet(Name = "FindById")]
-        [Route("FindById/{id}")]
+        [HttpGet("FindById/{id}")] 
         public KRequestReceipt<ExpenseModel> FindById(long id)
         {
             ExpenseModel expense = new ExpenseModel();
@@ -131,8 +128,7 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
             }
         }
 
-        [HttpPost(Name = "BulkAdd")]
-        [Route("BulkAdd")]
+        [HttpPost( "BulkAdd")]
         public KRequestReceipt<List<ExpenseModel>> BulkAdd(List<ExpenseModel> expenses)
         {
             List<ExpenseModel> recorded = new List<ExpenseModel>();
