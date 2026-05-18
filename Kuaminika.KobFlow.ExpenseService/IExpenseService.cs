@@ -9,5 +9,7 @@ namespace Kuaminika.KobFlow.ExpenseService
         ExpenseModel Add(ExpenseModel addMe);
         ExpenseModel Delete(ExpenseModel victim);
         ExpenseModel Update(ExpenseModel victim);
+        ExpenseModel FindById(long id);          
+        List<ExpenseModel> BulkAdd(List<ExpenseModel> expenses);  
     }
 }

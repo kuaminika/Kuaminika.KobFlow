@@ -96,6 +96,44 @@ namespace Kuaminika.KobFlow.ExpenseService
         }
 
 
+        public List<ExpenseModel> BulkAdd(List<ExpenseModel> expenses)
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? "" : method.Name;
+            logTool.LogTrace("starting", methodName);
+
+            List<ExpenseModel> results = repo.BulkAdd(expenses);
+
+            foreach (var result in results)
+            {
+                iKIdentityMap.AddToMap(result.Id, result);
+                cacheTool.Add($"{GetType().FullName}-{result.Id.ToString()}", result);
+            }
+
+            wipeOutCacheGetAll();
+            logTool.LogTrace("ending", methodName);
+
+            return results;
+        }
+
+        public ExpenseModel FindById(long id)
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? "" : method.Name;
+            logTool.LogTrace("starting", methodName);
+
+            string cacheKey = $"{GetType().FullName}-{id}";
+            if (cacheTool.Has(cacheKey))
+                return cacheTool.Get(cacheKey);
+
+            ExpenseModel result = repo.FindById(id);
+            iKIdentityMap.AddToMap(result.Id, result);
+            cacheTool.Add(cacheKey, result);
+
+            logTool.LogTrace("ending", methodName);
+            return result;
+        }
+
         private void wipeOutCacheGetAll()
         {
             string key = $"{GetType().FullName}-GetAll";
