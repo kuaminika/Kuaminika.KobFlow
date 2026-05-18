@@ -18,11 +18,21 @@ namespace Kuaniminka.KobFlow.ToolBox
         {
            _cache.Set(key, result, _defaultCacheDuration);
         }
-        
+
+        public T Get(string cacheKey)
+        {
+            return _cache.Get<T>(cacheKey);
+        }
+
         public List<T> GetListFromCache(string cacheKey)
         {
           var result =  _cache.Get<List<T>>(cacheKey);
             return result;
+        }
+
+        public bool Has(string cacheKey)
+        {
+           return  _cache.TryGetValue(cacheKey, out T _);
         }
 
         public bool HasList(string cacheKey)

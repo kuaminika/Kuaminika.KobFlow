@@ -20,6 +20,69 @@ namespace Kuaminika.KobFlow.Expense.Test
             specimen = new ExpenseController(config);
 
         }
+
+        [Test]
+        public void TestFindById()
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? "" : method.Name;
+
+            logTool.Log("starting test", methodName);
+
+            // Add a record so we have something to find
+            var testModel = TestModel;
+            testModel.Description = $"from{methodName}";
+            var addResult = specimen.Add(testModel);
+            long insertedId = addResult.Subject.Id;
+
+            logTool.Log($"finding id: {insertedId}", methodName);
+
+            var result = specimen.FindById(insertedId);
+
+            logTool.logObject(result, methodName);
+
+            logTool.Log("end test", methodName);
+
+            Assert.IsTrue(result.Error == false && result.Subject.Id == insertedId);
+        }
+
+
+        [Test]
+        public void TestBulkAdd()
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? "" : method.Name;
+
+            logTool.Log("starting test", methodName);
+
+            var result = specimen.Get();
+            int amountBefore = result.Subject.Count;
+            logTool.Log($"amount before: {amountBefore}", methodName);
+
+            int batchSize = 3;
+            List<ExpenseModel> batch = new List<ExpenseModel>();
+            for (int i = 0; i < batchSize; i++)
+            {
+                var model = TestModel;
+                model.Description = $"from{methodName}-{i}";
+                batch.Add(model);
+            }
+
+            var bulkResult = specimen.BulkAdd(batch);
+            logTool.logObject(bulkResult, methodName);
+
+            result = specimen.Get();
+            int amountAfter = result.Subject.Count;
+            logTool.Log($"amount after: {amountAfter}", methodName);
+
+            logTool.Log("end test", methodName);
+
+            Assert.IsTrue(bulkResult.Error == false
+                && bulkResult.Subject.Count == batchSize
+                && amountAfter == amountBefore + batchSize);
+        }
+
+
         // test ExpenseSourceId = 57
         // test kobholder id =9
         // test ExpenseCategoryId =4

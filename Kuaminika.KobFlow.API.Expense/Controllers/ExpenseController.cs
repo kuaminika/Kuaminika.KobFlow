@@ -110,5 +110,45 @@ namespace Kuaminika.KobFlow.API.Expense.Controllers
                 return handleError(result, ex);
             }
         }
+
+        [HttpGet(Name = "FindById")]
+        [Route("FindById/{id}")]
+        public KRequestReceipt<ExpenseModel> FindById(long id)
+        {
+            ExpenseModel expense = new ExpenseModel();
+            try
+            {
+                logTool.Action = "FindExpenseById";
+                expense = service.FindById(id);
+                return new KRequestReceipt<ExpenseModel>(expense);
+            }
+            catch (Exception ex)
+            {
+                var method = System.Reflection.MethodBase.GetCurrentMethod();
+                logTool.LogError($"{ex.Message}\n{ex.StackTrace}", method == null ? "" : method.Name);
+                var result = new KRequestReceipt<ExpenseModel>(expense);
+                return handleError(result, ex);
+            }
+        }
+
+        [HttpPost(Name = "BulkAdd")]
+        [Route("BulkAdd")]
+        public KRequestReceipt<List<ExpenseModel>> BulkAdd(List<ExpenseModel> expenses)
+        {
+            List<ExpenseModel> recorded = new List<ExpenseModel>();
+            try
+            {
+                logTool.Action = "BulkAddExpenses";
+                recorded = service.BulkAdd(expenses);
+                return new KRequestReceipt<List<ExpenseModel>>(recorded);
+            }
+            catch (Exception ex)
+            {
+                var method = System.Reflection.MethodBase.GetCurrentMethod();
+                logTool.LogError($"{ex.Message}\n{ex.StackTrace}", method == null ? "" : method.Name);
+                var result = new KRequestReceipt<List<ExpenseModel>>(recorded);
+                return handleError(result, ex);
+            }
+        }
     }
 }

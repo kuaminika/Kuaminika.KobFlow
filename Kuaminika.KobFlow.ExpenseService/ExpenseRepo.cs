@@ -55,6 +55,43 @@ namespace Kuaminika.KobFlow.ExpenseService
             return model;
         }
 
+        public List<ExpenseModel> BulkAdd(List<ExpenseModel> expenses)
+        {
+            var method = System.Reflection.MethodBase.GetCurrentMethod();
+            string methodName = method == null ? $"{GetType().Name}.BulkAdd" : method.Name;
+            logTool.LogTrace("starting", methodName);
+
+            if (expenses == null || expenses.Count == 0)
+                throw new ArgumentException("expenses list cannot be null or empty");
+
+            // Validate and build value rows
+            var valueRows = new List<string>();
+            foreach (var expense in expenses)
+            {
+                var validated = validateParameters(expense);
+                valueRows.Add($"({validated.MerchantId}, '{validated.Description}', {validated.CategoryId}, {validated.Amount}, '{validated.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")}', {validated.KobHolderId}, {validated.OwnerId})");
+            }
+
+            string query = $@"INSERT INTO `Expense` (`store_id`, `description`, `category_id`, `amount`, `date`, `account_id`, `user_id`)
+                            VALUES {string.Join(",\n", valueRows)}";
+
+            logTool.LogTrace(query, methodName);
+            KWriteResult outcome = dataGateway.ExecuteInsert(query);
+            logTool.logObject(outcome);
+
+            // Fetch the inserted rows back using the last insert id + count
+            long firstId = outcome.LastInsertedId - expenses.Count + 1;
+            var ids = Enumerable.Range(0, expenses.Count).Select(i => firstId + i);
+            string idList = string.Join(",", ids);
+
+            string selectQuery = $"{selectAllQuery} WHERE e.id IN ({idList})";
+            logTool.LogTrace(selectQuery, methodName);
+
+            List<ExpenseModel> recorded = dataGateway.ExecuteReadManyResult<ExpenseModel>(selectQuery);
+            logTool.LogTrace("ending", methodName);
+            return recorded;
+        }
+
         public ExpenseModel Add(ExpenseModel addMe)
         {
             var method = System.Reflection.MethodBase.GetCurrentMethod();
