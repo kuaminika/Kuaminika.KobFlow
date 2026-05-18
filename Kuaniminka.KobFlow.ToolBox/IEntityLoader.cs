@@ -3,7 +3,7 @@
     public interface ICacheHolder<T>
     {
         void Add(string key, T result);
-        global::Kuaminika.KobFlow.ExpenseService.ExpenseModel Get(string cacheKey);
+        T Get(string cacheKey);
         List<T> GetListFromCache(string cacheKey);
         bool Has(string cacheKey);
         bool HasList(string cacheKey);
