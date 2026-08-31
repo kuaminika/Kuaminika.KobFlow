@@ -60,7 +60,7 @@ namespace Kuaminika.KobFlow.MerchantService
 
             return result;
         }
-
+        //TODO this method should be moved to a different service. It is not a good idea to have it here
         public List<MerchantModel_Assigned> GetAllAssignedRecords()
         {
             var method = System.Reflection.MethodBase.GetCurrentMethod();

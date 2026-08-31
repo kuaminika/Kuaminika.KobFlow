@@ -17,3 +17,21 @@ services:
           path: ./Kuaminika.KobFlow.ExpenseService
         - action: rebuild
           path: ./Kuaniminka.KobFlow.ToolBox
+  merchant-api:
+    build:
+      context: "."
+      dockerfile: "Kuaminika.KobFlow.API.Merchant/Dockerfile"
+    ports:
+      - "5005:80"
+    environment:
+      - Urls=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - connectionString=${connectionString}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.API.Merchant
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.MerchantService
+        - action: rebuild
+          path: ./Kuaniminka.KobFlow.ToolBox
