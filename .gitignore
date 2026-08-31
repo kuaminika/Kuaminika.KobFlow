@@ -380,3 +380,4 @@ Kuaminika.KobFlow.ToolBox.Test/testSettings.json
 /Kuaminika.KobFlow.Income.Test/testconfig.json
 /Kuaminika.KobFlow.Merchant.Test/testconfig.json
 /Kuaminika.KobFlow.Expense.Test/testconfig.json
+.env

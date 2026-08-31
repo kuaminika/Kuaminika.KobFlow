@@ -1,0 +1,19 @@
+services:
+  expense-api:
+    build:
+      context: "."
+      dockerfile: "Kuaminika.KobFlow.API.Expense/Dockerfile"
+    ports:
+      - "5004:80"
+    environment:
+      - Urls=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - connectionString=${connectionString}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.API.Expense
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.ExpenseService
+        - action: rebuild
+          path: ./Kuaniminka.KobFlow.ToolBox
