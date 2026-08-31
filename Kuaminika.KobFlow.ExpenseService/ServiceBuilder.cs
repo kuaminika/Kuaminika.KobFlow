@@ -1,4 +1,5 @@
 ﻿using Kuaniminka.KobFlow.ToolBox;
+using MySqlConnector;
 
 namespace Kuaminika.KobFlow.ExpenseService
 {
@@ -17,7 +18,7 @@ namespace Kuaminika.KobFlow.ExpenseService
             string conenctionString = config.GetStringValue("connectionString");
             kJSONParser = new KNewtonJSonParser();
             var consoleLog = new ConsoleLogTool(kJSONParser);
-            consoleLog.Log(conenctionString);
+        
             var dbGatewayLog = new DataGateway(conenctionString, consoleLog);
             var logTool = LogToolFactory.New.CreateDbWriter(new LogToolFactoryToolbox
             {

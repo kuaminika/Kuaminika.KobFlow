@@ -53,6 +53,8 @@ namespace Kuaniminka.KobFlow.ToolBox
             {
                 using (var conn = new MySqlConnection(this.connStr))
                 {
+                    var builder = new MySqlConnectionStringBuilder(this.connStr);
+                    logTool.LogTrace($"Opening connection to {builder.Server}/{builder.Database} as {builder.UserID}", "...");
                     logTool.LogTrace("Opening connection.", "DataGateway.ExecuteInsert");
                     logTool.LogTrace("connectionTimeout:"+ conn.ConnectionTimeout, "DataGateway.ExecuteInsert");
                     conn.Open();
