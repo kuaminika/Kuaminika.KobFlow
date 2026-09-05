@@ -52,4 +52,41 @@ services:
         - action: rebuild
           path: ./Kuaminika.KobFlow.IncomeSourceService
         - action: rebuild
-          path: ./Kuaminika.KobFlow.ToolBox
+          path: ./Kuaniminka.KobFlow.ToolBox
+  expensecategory-api:
+    build:
+      context: "."
+      dockerfile: "Kuaminika.KobFlow.API.ExpenseCategory/Dockerfile"
+    ports:
+      - "5007:80"
+    environment:
+      - Urls=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - connectionString=${connectionString}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.API.ExpenseCategory
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.ExpenseCategoryService
+        - action: rebuild
+          path: ./Kuaniminka.KobFlow.ToolBox
+  incomecategory-api:
+    build:
+      context: "."
+      dockerfile: "Kuaminika.KobFlow.API.IncomeCategory/Dockerfile"
+    ports:
+      - "5008:80"
+    environment:
+      - Urls=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - connectionString=${connectionString}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.API.IncomeCategory
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.IncomeCategory
+        - action: rebuild
+          path: ./Kuaniminka.KobFlow.ToolBox
+
