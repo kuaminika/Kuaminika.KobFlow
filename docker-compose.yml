@@ -107,4 +107,22 @@ services:
           path: ./Kuaminika.KobFlow.IncomeService
         - action: rebuild
           path: ./Kuaniminka.KobFlow.ToolBox
+  kobholder-api:
+    build:
+      context: "."
+      dockerfile: "Kuaminika.KobFlow.API.KobHolder/Dockerfile"
+    ports:
+      - "5010:80"
+    environment:
+      - Urls=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - connectionString=${connectionString}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.API.KobHolder
+        - action: rebuild
+          path: ./Kuaminika.KobFlow.KobHolderService
+        - action: rebuild
+          path: ./Kuaniminka.KobFlow.ToolBox
 
