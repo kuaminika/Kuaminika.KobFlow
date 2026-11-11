@@ -18,21 +18,25 @@
 // Run it with:
 //   node test-endpoints.js
  
+const  HEALTHCHECK_ENDPOINT_DOTNET = "swagger/index.html";
+const HEALTHCHECK_ENDPOINT_NODE ="health";
 const services = [
-  { name: "expense-api", port: 5004 },
-  { name: "merchant-api", port: 5005 },
-  { name: "incomesource-api", port: 5006 },
-  { name: "expensecategory-api", port: 5007 },
-  { name: "incomecategory-api", port: 5008 },
-  { name: "income-api", port: 5009 },
-  { name: "kobholder-api", port: 5010 },
+  { name: "expense-api", port: 5004  ,"healthcheckEndpoint":HEALTHCHECK_ENDPOINT_DOTNET},
+  { name: "merchant-api", port: 5005 ,"healthcheckEndpoint":HEALTHCHECK_ENDPOINT_DOTNET},
+  { name: "incomesource-api", port: 5006 ,"healthcheckEndpoint":HEALTHCHECK_ENDPOINT_DOTNET},
+  { name: "expensecategory-api", port: 5007 ,"healthcheckEndpoint":HEALTHCHECK_ENDPOINT_DOTNET},
+  { name: "incomecategory-api", port: 5008,"healthcheckEndpoint":HEALTHCHECK_ENDPOINT_DOTNET },
+  { name: "income-api", port: 5009,"healthcheckEndpoint":HEALTHCHECK_ENDPOINT_DOTNET },
+  { name: "kobholder-api", port: 5010 ,"healthcheckEndpoint":HEALTHCHECK_ENDPOINT_DOTNET},
+  { name: "import-service", port: 5011,"healthcheckEndpoint":HEALTHCHECK_ENDPOINT_NODE },
+
 ];
  
 // How long to wait for a single service before giving up (milliseconds).
 const TIMEOUT_MS = 5000;
  
 async function checkService(service) {
-  const url = `http://localhost:${service.port}/swagger/index.html`;
+  const url = `http://localhost:${service.port}/${service.healthcheckEndpoint}`;
  
   // AbortController lets us cancel the fetch if it takes too long,
   // e.g. if a container is stuck or not running at all.
